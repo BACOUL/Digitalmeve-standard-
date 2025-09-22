@@ -1,186 +1,134 @@
-# DigitalMeve Standard Specification (.MEVE)
+# DigitalMeve Standard (v1.0.0)
 
-**Version:** 1.0  
-**Status:** Draft for public review  
-**Authors:** DigitalMeve Working Group  
-**License:** CC BY 4.0  
-
----
-
-## 1. Purpose and Scope
-The `.MEVE` certificate is a **universal, lightweight proof container** designed to certify the integrity and authenticity of any digital file.  
-
-Goals:
-- Ensure **trust** without central servers.  
-- Enable **instant verification** by anyone, anywhere.  
-- Provide a **future-proof open standard** for individuals, professionals, and organizations.  
-
-The `.MEVE` format is intended to become the **global standard for digital file certification**, comparable to how PDF became the standard for documents.
+**La preuve invisible. La confiance visible.**  
+DigitalMeve définit un **standard mondial de certification de documents** :  
+chaque fichier (PDF, DOC, PNG, …) peut être certifié, vérifié, et partagé sans perte de confiance.
 
 ---
 
-## 2. Terminology
-- **Certificate**: The `.meve.json` file containing the proof.  
-- **Issuer**: The entity (individual or professional) generating the proof.  
-- **Verifier**: Any party validating a `.MEVE` certificate.  
-- **Binding**: Optional DNS-based mechanism linking certificates to a domain.  
-- **.MEVE version**: The specification version used to generate the certificate.  
+## 1. Principles
+
+- **Universal** : works with any file type (text, image, audio, video).  
+- **Transparent** : verification is independent, no hidden servers.  
+- **Durable** : certificates remain valid across time and formats.  
+- **Privacy-first** : files never leave the user’s device.  
+- **Scalable** : suitable for individuals, enterprises, and institutions.
 
 ---
 
-## 3. Core Principles
-1. **Privacy-first** → files never leave the device.  
-2. **Independent verification** → no central authority required.  
-3. **Cryptographic integrity** → based on modern, auditable algorithms.  
-4. **Universal compatibility** → works with any file type.  
-5. **Durability** → valid across time, devices, and formats.  
-6. **Transparency** → open, vendor-neutral, auditable.  
+## 2. Certified File Structure
+
+Every file certified by DigitalMeve contains:
+
+1. **Visible watermark**  
+   - A small, human-readable tag:  
+     `DigitalMeve Certified – ID#<short-hash>`  
+   - Placed in a non-intrusive but permanent way.  
+   - Protects against trivial copy or screenshot fraud.
+
+2. **Invisible SHA-256**  
+   - Embedded into the file’s metadata or hidden layer.  
+   - Ensures integrity: any modification breaks the proof.  
+   - Value: `sha256(<original_file>)`.
+
+3. **Invisible DigitalMeve marker (MEVE Patch)**  
+   - Proprietary, tamper-resistant hidden signature.  
+   - Resistant to format conversions (e.g. PDF → JPG).  
+   - ⚠️ **Exact embedding method is confidential.**
 
 ---
 
-## 4. File Format Definition
+## 3. Certificate Format
 
-A `.meve.json` file is a UTF-8 encoded JSON document with the following fields:
+Each certified file comes with a **certificate in HTML format**:  
 
-| Field         | Type     | Required | Description |
-|---------------|----------|----------|-------------|
-| `meve_version`| String   | Yes      | Specification version (e.g., `"1.0"`) |
-| `file_hash`   | String   | Yes      | SHA-256 digest of the certified file (`"SHA-256:<hex>"`) |
-| `issuer`      | String   | Optional | Domain or identifier of the issuer |
-| `issuer_type` | Enum     | Yes      | `"individual"` or `"professional"` |
-| `timestamp`   | String   | Yes      | UTC timestamp in ISO 8601 format |
-| `algorithm`   | Enum     | Yes      | `"SHA-256"` (mandatory), `"SHA-512"` (optional future) |
-| `signature`   | String   | Yes      | Base64-encoded digital signature |
-| `extensions`  | Object   | Optional | Future-proofing for custom fields |
+Example filename: `contract.meve.html`
 
----
-
-## 5. Cryptographic Algorithms
-
-### Hash Functions
-- **SHA-256** → mandatory.  
-- **SHA-512** → optional, recommended for high-security contexts.  
-
-### Signature Schemes
-- **Ed25519** → mandatory (default).  
-- **RSA-2048** → optional fallback.  
-- **ECDSA (P-256)** → optional, for interoperability.  
+### Contents:
+- **Header**
+  - DigitalMeve logo + version.
+  - Certificate ID.
+- **File Metadata**
+  - Original filename.
+  - File type.
+  - SHA-256 hash.
+- **Proof Data**
+  - Timestamp (ISO 8601).
+  - Unique DigitalMeve signature.
+  - Reference watermark code.
+- **Certificate Holder**
+  - Free plan: anonymous.  
+  - Paid individual: includes *name* or *email*.  
+  - Pro / Enterprise: includes *company name* + *unique enterprise key*.  
+- **Verification**
+  - “Verify now” button linking to `/verify`.
 
 ---
 
-## 6. Generation Process
-1. Compute file hash (`SHA-256`).  
-2. Prepare JSON structure with required fields.  
-3. Sign concatenated fields with issuer’s private key.  
-4. Output `.meve.json` file alongside the original file.  
+## 4. Verification Process
+
+1. User uploads file → SHA-256 is recomputed.  
+2. Invisible marker (MEVE patch) is checked.  
+3. Certificate HTML is parsed:
+   - Hash match? ✅  
+   - Signature valid? ✅  
+   - Certificate holder present (if applicable)? ✅  
+4. Result is displayed instantly:
+   - ✅ Verified (green)  
+   - ⚠️ Mismatch (yellow, tampered file)  
+   - ❌ Invalid (red)
+
+Verification is **client-side**, no server dependency.
 
 ---
 
-## 7. Verification Process
-To validate a file with its `.meve.json` certificate:
-1. Compute file hash and compare with `file_hash`.  
-2. Validate `signature` using issuer’s public key.  
-3. If `issuer` is a domain, check DNS TXT record:
+## 5. Keys & Identity
 
-_meve.example.com TXT "pubkey=<base64>"
-
-4. Confirm timestamp is valid (optional external audit).  
-
----
-
-## 8. Compliance and Security
-- **GDPR compliant** → no personal data stored by default.  
-- **Transparency** → open format, auditable code.  
-- **Durability** → JSON ensures readability in any language.  
-- **Threat model** → protects against tampering, forgery, replay attacks.  
+- **Free users** : anonymous certification (filigrane + proof only).  
+- **Individuals (paid)** : name/email added in certificate.  
+- **Professionals (paid)** :  
+  - Dedicated **private key** generated.  
+  - Used to sign files and certificates.  
+  - Identity bound to company (SIRET/ID).  
 
 ---
 
-## 9. Examples
+## 6. Security Model
 
-### Individual Certificate
-```json
-{
-  "meve_version": "1.0",
-  "file_hash": "SHA-256:78bd6b1ca7fb38c81feefe71...",
-  "issuer_type": "individual",
-  "timestamp": "2025-09-22T12:00:00Z",
-  "algorithm": "SHA-256",
-  "signature": "B64-SIGNATURE-EXAMPLE"
-}
+- Cryptography: SHA-256 + asymmetric signing (Elliptic Curve).  
+- Privacy: all proofs generated locally in the browser.  
+- Transparency: certificates are plain HTML, auditable by anyone.  
+- Resilience: verification does not rely on vendor lock-in.
 
-Professional Certificate with DNS Binding
-
-{
-  "meve_version": "1.0",
-  "file_hash": "SHA-256:7be1c0ff13e3bc01...",
-  "issuer": "digitalmeve.com",
-  "issuer_type": "professional",
-  "timestamp": "2025-09-22T12:00:00Z",
-  "algorithm": "SHA-256",
-  "signature": "B64-SIGNATURE-EXAMPLE"
-}
-
+⚠️ **Details of invisible embedding algorithms are not publicly disclosed.**
 
 ---
 
-10. Extensions and Future Work
+## 7. File Types Supported
 
-Multi-signature (several issuers sign the same file).
-
-External timestamping (integration with blockchain or TSA).
-
-Compression (binary .meve format, optional).
-
-Localized metadata (language, region, jurisdiction).
-
-
+- PDF, DOC/DOCX, XLSX, PNG, JPG, MP4, TXT.  
+- Other formats can be supported via **generic binary mode**.
 
 ---
 
-11. Compatibility
+## 8. Versioning
 
-Backward-compatible by version (meve_version).
-
-Verifiers must ignore unknown fields.
-
-New algorithms/extensions only added via minor version upgrades.
-
-
+- `v1.0.0` → current release (core proof model).  
+- `v1.1.0` → enterprise key system.  
+- `v2.0.0` → interoperability with public ledgers (optional).
 
 ---
 
-12. Governance
+## 9. Licensing
 
-Changes to the standard follow:
-
-Public proposals via GitHub (ADR process).
-
-Semantic versioning:
-
-Major = breaking changes.
-
-Minor = new features/extensions.
-
-Patch = clarifications, fixes.
-
-
-
+Documentation: **CC BY 4.0**  
+Certificates & implementations: **proprietary** DigitalMeve core.
 
 ---
 
-13. References
+## 10. Governance
 
-RFC 8032: Edwards-Curve Digital Signature Algorithm (EdDSA)
-
-RFC 6234: SHA-2 Hash Functions
-
-NIST SP 800-57: Key Management
-
-
-
----
-
-End of Document
-
----
+All changes to this standard follow:  
+- **ADRs** (Architecture Decision Records).  
+- Semantic versioning (`MAJOR.MINOR.PATCH`).  
+- Public discussion via GitHub Issues / Pull Requests.
