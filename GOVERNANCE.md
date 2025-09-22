@@ -1,101 +1,127 @@
-# Governance of DigitalMeve
+# Governance — DigitalMeve Standard
 
-DigitalMeve is designed not only as a product, but as a **global standard for digital certification**.  
-To ensure neutrality, transparency, and long-term adoption, this document defines the governance model of the project.
+## 1. Purpose
 
----
+The DigitalMeve standard defines how **invisible proofs and certifications** are embedded and verified in digital files.  
+Because it aspires to become a **global standard**, its governance must be **transparent, inclusive, and technically rigorous**.
 
-## 1. Mission of Governance
-The governance of DigitalMeve ensures that:
-- The standard remains **simple, secure, and universal**.  
-- Decisions are made **transparently and openly**.  
-- The protocol evolves **without breaking compatibility**.  
-- Adoption is fostered among **individuals, professionals, and institutions worldwide**.  
+This document sets out the rules for how the standard evolves.
 
 ---
 
-## 2. Core Principles
-- **Neutrality** → No single actor (company, government, or individual) can unilaterally change the standard.  
-- **Transparency** → Every change must be documented in an **ADR (Architecture Decision Record)**.  
-- **Openness** → All discussions and specifications are public and open for contribution.  
-- **Permanence** → DigitalMeve commits to long-term support and backward compatibility.  
+## 2. Principles
+
+DigitalMeve governance follows these guiding principles:
+
+1. **Openness** — All specifications, discussions, and decisions are public.  
+2. **Neutrality** — No single company owns the standard; it is community-driven.  
+3. **Interoperability** — Implementations must remain compatible across platforms and vendors.  
+4. **Backward compatibility** — Existing certificates remain valid indefinitely.  
+5. **Transparency** — Every design decision is documented (ADR model).  
+6. **Security-first** — Any change must maintain or improve cryptographic and privacy guarantees.  
 
 ---
 
-## 3. Decision-Making Process
-- **Minor changes** (typos, formatting, clarifications) can be merged directly by maintainers.  
-- **Technical changes** must be proposed via:
-  1. An **Issue** on GitHub describing the motivation.  
-  2. A **Pull Request** including a new ADR in `/ADRs/`.  
-- **Major changes** (cryptography primitives, file structure, certificate schema) require:  
-  - Community discussion (GitHub Issues + forums).  
-  - Review by maintainers and experts.  
-  - Consensus before merging.  
+## 3. Versioning Policy
+
+- We follow **Semantic Versioning (SemVer)**:
+  - **MAJOR** (X.0.0): breaking changes, e.g., new cryptographic primitives.  
+  - **MINOR** (0.Y.0): new features, backward-compatible.  
+  - **PATCH** (0.0.Z): bug fixes, clarifications.  
+
+- Certificates generated with older versions must remain **verifiable forever**.  
+- Deprecations require **at least 24 months of transition** before removal.  
 
 ---
 
-## 4. Versioning Policy (SemVer)
-DigitalMeve follows **Semantic Versioning (SemVer)**:
+## 4. Decision Process
 
-- **v1.x** → Core features (file watermark, SHA-256 invisible proof, invisible DigitalMeve key, HTML certificates).  
-- **v2.x** → Professional features (private keys for companies, DNS integration, APIs, advanced verification tools).  
-- **v3.x and beyond** → Institutional adoption, multi-format compatibility, international standardization (ISO, W3C, IETF).  
+### 4.1 Proposals
+- Changes are proposed via **GitHub Pull Requests**.  
+- Each proposal must include an **ADR (Architecture Decision Record)**.  
+- ADRs explain the problem, alternatives, decision, and consequences.  
 
-Each release must include:
-- A **changelog** in `ROADMAP.md`.  
-- Migration guides when breaking changes occur.  
+### 4.2 Review
+- PRs are reviewed by **Maintainers** (see section 5).  
+- Public discussion is encouraged before merging.  
 
----
+### 4.3 Voting
+- For breaking changes (MAJOR), a **supermajority (≥ 75%) of maintainers** must approve.  
+- For MINOR or PATCH, **simple majority (≥ 50%)** is sufficient.  
 
-## 5. Roles and Responsibilities
-- **Maintainers**:  
-  - Manage Pull Requests and releases.  
-  - Ensure alignment with governance principles.  
-- **Contributors**:  
-  - Anyone can propose changes, improvements, or bug reports.  
-  - Contributions must follow `CONTRIBUTING.md`.  
-- **Advisory Board (future stage)**:  
-  - Composed of institutions, companies, and cryptography experts.  
-  - Validates strategic decisions and ensures neutrality.  
+### 4.4 Transparency
+- All accepted/rejected ADRs are stored in the `/ADRs` directory.  
+- A public changelog is maintained in `ROADMAP.md`.
 
 ---
 
-## 6. Alignment with Global Standards
-To achieve credibility as a **worldwide certification protocol**, DigitalMeve aligns with:  
-- **ISO/IEC** standards (information security, digital trust).  
-- **W3C** (web interoperability and cryptographic APIs).  
-- **IETF** (open internet protocols).  
-- **EU & US regulations** (GDPR, eIDAS, NIST guidelines).  
+## 5. Roles & Responsibilities
+
+- **Contributors**  
+  Anyone can open issues, submit PRs, or suggest improvements.  
+
+- **Maintainers**  
+  Trusted developers with write access to the repository.  
+  They ensure consistency, security, and alignment with governance rules.  
+
+- **Advisory Board**  
+  Representatives from academia, industry, and open-source.  
+  They provide **non-binding recommendations** for major evolutions.  
+
+- **Enterprises & Partners**  
+  Enterprises using DigitalMeve Pro may request feature extensions.  
+  Requests follow the same open ADR process.  
 
 ---
 
-## 7. Governance Evolution
-- This governance document is reviewed **annually**.  
-- Community proposals can suggest governance changes via an ADR.  
-- Governance maturity evolves with adoption:  
-  - **Phase 1 (Founders-led)**: Initial design and bootstrap.  
-  - **Phase 2 (Community-driven)**: Contributors + maintainers share decision-making.  
-  - **Phase 3 (Institutional standard)**: Governance includes independent organizations and regulators.  
+## 6. Conflict Resolution
+
+- Minor conflicts are resolved through GitHub discussion.  
+- Persistent disagreements trigger a **vote among maintainers**.  
+- If unresolved, the issue is escalated to the **Advisory Board**.  
 
 ---
 
-## 8. Audits and Trust
-- **Independent audits** will be conducted periodically (cryptography, data protection, security model).  
-- Results will be **published openly**.  
-- Any vulnerability disclosure follows the `SECURITY.md` policy.  
+## 7. Security Governance
+
+- Any change affecting cryptography or proofs requires a **formal audit** before release.  
+- Emergency security patches bypass normal ADR but require **post-mortem ADR** after deployment.  
+- The **Security Team** maintains `SECURITY.md` and coordinates responsible disclosure.  
 
 ---
 
-## 9. Long-Term Vision
-The ultimate goal is for **DigitalMeve certificates** to become as recognized and reliable as existing global standards (PDF, SSL/TLS, DNSSEC).  
+## 8. Standard Evolution
 
-- Individuals: accessible, trustworthy certification for personal files.  
-- Professionals: integration into workflows, APIs, and business processes.  
-- Institutions: adoption as a **recognized standard for digital trust**.  
+The standard evolves through **phased releases**:
+
+- **v1.x**: Core proof embedding (watermark + invisible SHA-256 + invisible DigitalMeve key).  
+- **v2.x**: Professional keys, enterprise integration (DNS binding, HSM support).  
+- **v3.x**: Post-quantum signatures, zero-knowledge selective disclosure.  
+
+Each phase is documented in `ROADMAP.md`.
 
 ---
 
-## 10. Contact and Participation
-- Governance discussions are public in the [GitHub Issues](./issues).  
-- Contributions must follow [CONTRIBUTING.md](./CONTRIBUTING.md).  
-- Formal proposals must be submitted as **ADRs**.
+## 9. Transparency & Audits
+
+- All source code and specifications are public under an open license.  
+- Independent **third-party audits** will be published annually.  
+- DigitalMeve commits to **transparency reports** (government requests, vulnerabilities fixed).  
+
+---
+
+## 10. Amendments to Governance
+
+- Governance changes follow the same ADR process.  
+- A **supermajority (≥ 75%) of maintainers** is required.  
+- Changes must be announced with **30 days’ public review period** before adoption.  
+
+---
+
+## 11. Contact
+
+- Governance discussions: [GitHub Discussions](https://github.com/digitalmeve-standard)  
+- Security reports: see `SECURITY.md`  
+- Legal inquiries: legal@digitalmeve.org  
+
+---
