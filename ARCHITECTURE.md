@@ -112,21 +112,183 @@ A DigitalMeve certificate is a self-contained HTML file with a human section and
   - Professional: “Issued by: <Organization>”.
 - Call to action: “Verify now”.
 
-### 8.2 Machine section (mandatory)
-Embed one `<script type="application/meve+json">` with minimally:
+## 8.2 Enterprise Extensions
 
-```json
-{
-  "version": "1.0",
-  "file_name": "invoice.pdf",
-  "mime_type": "application/pdf",
-  "file_hash": "78bd6b1ca7fb38c81feefe71354ae749297890f8d33731c7c9074e2364ace149",
-  "algorithm": "SHA-256",
-  "timestamp": "2025-09-22T14:12:00Z",
-  "issuer_type": "professional",
-  "issuer": "acme.example",
-  "issuer_display_name": "ACME Inc.",
-  "kid": "2025-q3",
-  "sig_alg": "ed25519",
-  "signature": "BASE64URL_SIGNATURE"
-}
+Enterprises may require additional layers of trust, audit, and integration. DigitalMeve supports these extensions:
+
+- **Private Key Integration**: Enterprises receive a dedicated private key pair. Documents can be signed under their corporate identity.
+- **DNS Binding**: A DNS TXT record at `_meve.company.com` binds the enterprise certificate root to the company domain.
+- **Visible Watermark**: Every enterprise-certified document may include an optional visible watermark (company logo or reference code).
+- **Custom Metadata**: Enterprises can attach business metadata (invoice ID, project code, audit number) directly into the .MEVE certificate.
+- **Batch Processing**: Large-scale certification pipelines (e.g. 10k+ documents per day) supported via offline/bulk APIs.
+- **Compliance Mode**: Optionally log hash references into a compliance ledger (external or self-hosted).
+
+These extensions remain interoperable: any DigitalMeve verification client can still verify enterprise documents, even without the extra metadata.
+
+---
+
+## 9. File Types & Embedding Strategy
+
+DigitalMeve supports both binary and textual formats.
+
+- **PDF**: SHA-256 digest is calculated on the full file. A visible watermark is embedded in a reserved region. The invisible `.MEVE` marker is appended in an unused metadata section.
+- **DOCX**: Certificate data injected as a custom XML part; invisible SHA-256 anchor embedded in document properties.
+- **Images (PNG/JPG)**: Invisible steganographic marker inserted (subtle, non-destructive). SHA-256 stored in metadata.
+- **ZIP**: Entire archive hashed. A `.meve.json` sidecar can be added inside.
+- **Generic binary**: Pure certificate file (`.meve.json`) accompanies the binary.
+
+---
+
+## 10. Verification Flow
+
+Verification clients must support:
+
+1. **File Input**  
+   User drags & drops the file into the verifier (browser or CLI).
+2. **Hash Extraction**  
+   - Compute SHA-256 of the full binary.  
+   - Extract embedded invisible `.MEVE` marker.  
+   - (If enterprise mode) Verify DNS TXT binding and corporate signature.
+3. **Certificate Lookup**  
+   Certificate is embedded in the file itself (no central lookup).  
+   Verifier validates JSON schema.
+4. **Validation Steps**  
+   - Compare recomputed SHA-256 with certificate.  
+   - Check timestamp validity (ISO 8601, UTC).  
+   - Verify signature (if present).  
+   - Report result: ✅ valid / ❌ invalid.
+5. **Result Presentation**  
+   Display certificate in a human-readable HTML format:  
+   - File name  
+   - Date, time  
+   - Issuer (anonymous, individual, or enterprise)  
+   - SHA-256 (truncated + full)  
+   - Valid/invalid badge
+
+---
+
+## 11. Cryptographic Considerations
+
+- **Hashing Algorithm**: SHA-256 (NIST standard, collision resistant).  
+- **Signatures**: Ed25519 recommended (fast, strong, open).  
+- **Timestamp**: Generated client-side; can be anchored in enterprise mode.  
+- **Randomness**: Nonces used when embedding invisible watermarks to prevent pattern attacks.  
+- **Forward Compatibility**: Hash algorithm is versioned (MEVE v1: SHA-256; MEVE v2: SHA-3, etc.).  
+- **Key Management**: Enterprises receive private keys securely (via HSM or PKCS#12 bundle). DigitalMeve does not store keys.
+
+---
+
+## 12. Threat Model
+
+- **Adversary Goal**: Forge a DigitalMeve certificate for a file they did not create.  
+- **Mitigations**:  
+  - SHA-256 prevents preimage/collision forgery.  
+  - Invisible watermark ensures tampering detection.  
+  - Enterprise private keys prevent impersonation.  
+  - No central DB eliminates “single server” compromise.  
+
+- **Residual Risks**:  
+  - If enterprise private key is leaked, adversary may forge under that identity. Mitigation: rotate keys, revoke via DNS.  
+  - If file formats are exotic, invisible embedding may fail. Mitigation: fall back to `.meve.json` sidecar.  
+
+---
+
+## 13. Privacy Guarantees
+
+- Files never leave the client device.  
+- No uploads, no remote logs.  
+- Certificates themselves contain only non-sensitive metadata (hashes, timestamps, optional issuer).  
+- Enterprise mode may add identifying metadata, but this is under the enterprise’s control.  
+- Verification can be done fully offline.
+
+---
+
+## 14. Governance
+
+- **Specification Ownership**: DigitalMeve Standard is open.  
+- **Changes**: Proposed via ADRs (Architecture Decision Records).  
+- **Versioning**: Semantic Versioning (SemVer).  
+- **Consensus**: Major changes require review and approval.  
+- **Interoperability**: Implementations must pass conformance tests.
+
+---
+
+## 15. Roadmap
+
+- **v1.0 (Current)**:  
+  - SHA-256 + invisible marker  
+  - Visible watermark for PDFs/images  
+  - Certificate JSON structure  
+  - Browser + CLI reference implementations
+
+- **v1.1 (Planned)**:  
+  - Enterprise private key support  
+  - DNS binding  
+  - Batch certification API
+
+- **v2.0 (Future)**:  
+  - Alternative hash algorithms (SHA-3, BLAKE3)  
+  - Ledger anchoring (optional)  
+  - Rich metadata profiles
+
+---
+
+## 16. Example Certificate (HTML)
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DigitalMeve Certificate</title>
+    <style>
+      body { font-family: sans-serif; background: white; color: black; }
+      .valid { color: green; font-weight: bold; }
+      .invalid { color: red; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <h1>DigitalMeve Certificate — VALID ✅</h1>
+    <p><strong>File:</strong> invoice-2025Q1.pdf</p>
+    <p><strong>Date:</strong> 2025-09-18</p>
+    <p><strong>Time:</strong>00:46:34 UTC</p>
+    <p><strong>Issuer:</strong> Example Corp (via DNS binding)</p>
+    <p><strong>SHA-256:</strong> 78bd6b1c...e2364ace149</p>
+    <p><strong>MEVE Version:</strong> 1</p>
+  </body>
+</html>
+## 17. Appendix
+
+### 17.1 File Extensions
+- **`.meve.json`** — Detached certificate (sidecar) for any file type.
+- **`.pdf` / `.docx` / `.jpg` / `.png`** — Native embedding of watermark + invisible marker.
+- **`.zip`** — Archive certification with embedded `.meve.json`.
+
+### 17.2 Terminology
+- **Invisible Marker**: Cryptographic anchor (SHA-256 hash + Meve code) embedded in the file metadata or unused structure, undetectable by normal viewers.  
+- **Visible Watermark**: Human-visible overlay (e.g., “DigitalMeve Certified” or company logo) displayed on the file for transparency.  
+- **Certificate**: A `.meve.json` (machine-readable) or `.html` (human-readable) proof of authenticity bound to the file.  
+- **Issuer**: Entity that created the certificate (anonymous, individual, or enterprise).  
+- **Enterprise Key**: Private key issued to professional customers, allowing signing on behalf of a company domain.  
+
+### 17.3 Open Source Reference
+- **GitHub Repository**: Official reference implementations, examples, and conformance tests are available.  
+- **Sample Files**: Test PDFs, DOCX, and images provided with pre-certified examples.  
+- **CLI Tools**: Basic `generate` and `verify` commands for developers.  
+- **Browser Verifier**: Web-based drag-and-drop tool for end users.  
+
+### 17.4 Contact & Governance
+- **Contact**: info@digitalmeve.com  
+- **Governance Model**:  
+  - Open contribution via GitHub pull requests and ADRs.  
+  - Semantic versioning (SemVer) for all spec updates.  
+  - Community review required for breaking changes.  
+
+### 17.5 Compliance Notes
+- **GDPR / Privacy**: Files never leave the user’s device; no central server logs are required.  
+- **Auditability**: All enterprise extensions (DNS, private keys, visible watermarks) remain backward-compatible with the open verifier.  
+- **Longevity**: Certificates are designed to remain valid across decades, file formats, and software ecosystems.  
+
+---
+
+🔒 This appendix is the authoritative reference for implementers, partners, and auditors.
