@@ -1,117 +1,142 @@
-# DigitalMeve Whitepaper
-
-## 1. Introduction
-
-In today’s digital ecosystem, authenticity is under constant threat.  
-Fake invoices, forged diplomas, tampered contracts, and counterfeit artworks circulate at an unprecedented scale.  
-Trust, once inherent in physical signatures and official stamps, is now fragile in the digital world.
-
-**DigitalMeve** introduces a new paradigm:  
-👉 Every file can become its own certificate of authenticity.  
-Invisible, secure, and verifiable anywhere — without central storage or exposure of private data.
+# DigitalMeve — Whitepaper  
+**Invisible proof. Visible trust.**  
+A global certification standard for embedding invisible, tamper-proof proofs inside any file.  
 
 ---
 
-## 2. The Problem
-
-- **Rising fraud**: Digital forgeries in legal, financial, and creative industries are growing exponentially.  
-- **Centralized solutions**: Most current certification systems rely on servers or intermediaries, making them fragile, opaque, and costly.  
-- **Lack of universality**: Existing standards (PDF signing, proprietary DRM, blockchain anchoring) are fragmented, complex, and not universally accessible.  
-- **Barrier for individuals**: Creators, freelancers, and small businesses lack affordable, simple tools for protecting their work.
-
----
-
-## 3. The DigitalMeve Solution
-
-DigitalMeve introduces the **.MEVE Standard**, a universal, privacy-first, and auditable method for certifying any file.
-
-- **Visible watermark**: Each certified document carries a subtle visible mark of authenticity.  
-- **Invisible fingerprint**: A SHA-256 hash is invisibly embedded inside the file.  
-- **DigitalMeve invisible key**: Proprietary invisible marker that binds the file to the certificate.  
-- **User identity integration**:  
-  - For **individuals**: Paid plans embed the name or email of the certifier in the certificate.  
-  - For **professionals**: Private keys are issued to allow certification under the company name, reinforced with DNS binding.
-
-The result: **tamper-evident digital files that remain self-verifiable, without external databases**.
+## 📖 Table of Contents
+- [1. Executive Summary](#1-executive-summary)  
+- [2. Vision & Mission](#2-vision--mission)  
+- [3. Market Context](#3-market-context)  
+- [4. Problem Statement](#4-problem-statement)  
+- [5. DigitalMeve Solution](#5-digitalmeve-solution)  
+- [6. Technology Overview](#6-technology-overview)  
+- [7. Use Cases](#7-use-cases)  
+- [8. Business Model](#8-business-model)  
+- [9. Competitive Advantage](#9-competitive-advantage)  
+- [10. Roadmap](#10-roadmap)  
+- [11. Governance & Ecosystem](#11-governance--ecosystem)  
+- [12. Conclusion](#12-conclusion)  
 
 ---
 
-## 4. Key Features
-
-- **Privacy-first**: Certification and verification happen directly in the browser — files never leave the user’s device.  
-- **Universal**: Works with any file type (.pdf, .docx, .png, .mp3, etc.).  
-- **Lightweight certificates**: Certificates are HTML-based, human-readable, and machine-verifiable.  
-- **No storage required**: DigitalMeve does not store or copy user files.  
-- **Open & auditable**: The .MEVE format is transparent and publicly documented.  
-- **Enterprise-grade**: Pro users receive DNS-based identity binding and private keys.  
+## 1. Executive Summary
+DigitalMeve introduces a universal certification layer for digital files.  
+Every document, image, or media file can embed an **invisible proof** and a **visible watermark**, verifiable globally in seconds.  
+This transforms ordinary files into **trusted certificates**, without central storage, servers, or third-party dependence.  
 
 ---
 
-## 5. Market & Adoption Potential
+## 2. Vision & Mission
+**Vision** → Establish DigitalMeve as the *global invisible certification standard*, adopted across industries and recognized as a digital trust seal.  
 
-- **Individuals & Creators**: Artists, freelancers, and students can secure their works, portfolios, and resumes instantly.  
-- **Businesses**: Companies can certify contracts, invoices, HR documents, and client deliverables with confidence.  
-- **Institutions**: Universities, banks, and governments can adopt .MEVE as a lightweight, universal digital notary standard.  
-
-The market for digital certification is projected to **exceed $25 billion by 2030**, with no universal, lightweight standard yet dominating.  
-**DigitalMeve aims to fill this gap**.
+**Mission** → Provide individuals, businesses, and institutions with an **instant, interoperable, and tamper-proof certification solution** that respects privacy and compliance worldwide.  
 
 ---
 
-## 6. Competitive Differentiation
+## 3. Market Context
+- **Explosion of digital fraud**: Fake CVs, manipulated contracts, counterfeit artworks.  
+- **Decentralization trend**: Shift from central authorities to verifiable open standards.  
+- **Regulatory pressure**: GDPR, CCPA, PSD2, eIDAS pushing stronger digital verification.  
+- **Growing demand**: Enterprises, governments, and individuals all need accessible trust layers.  
 
-Unlike blockchain anchoring or proprietary DRM:  
-- No wallet, gas fees, or blockchain complexity.  
-- No vendor lock-in.  
-- No external server dependency.  
-- Verifiable offline, anytime, anywhere.  
-
-DigitalMeve combines the **rigor of cryptography** with the **usability of consumer tools**, bridging individuals, enterprises, and institutions under one standard.
+Global TAM (Total Addressable Market): **$50B+ digital identity & certification market** by 2030.  
 
 ---
 
-## 7. Pricing Philosophy
+## 4. Problem Statement
+Today:  
+- File authenticity is **easy to fake**.  
+- Certification solutions are **complex, expensive, or centralized**.  
+- Digital trust is **fragmented** across borders, formats, and ecosystems.  
 
-DigitalMeve is accessible to all:  
-- **Free tier**: Up to 5 certifications/month, anonymous mode.  
-- **Individual Plan**: €9.90/month or annual billing — includes named certification.  
-- **Professional Plan**: €29.90/month or annual billing — includes private keys, DNS binding, and company certificates.  
-- **Enterprise Plan**: Custom pricing for large-scale adoption.  
-
-Pricing adapts by region, ensuring fairness and compliance with global standards.
+Result → Individuals, enterprises, and institutions lack a **universal, lightweight, and private certification standard**.  
 
 ---
 
-## 8. Security & Compliance
+## 5. DigitalMeve Solution
+DigitalMeve standardizes **invisible + visible proofs** embedded in files:  
+- **Invisible proof** → SHA-256 + proprietary invisible marker.  
+- **Visible watermark** → Public assurance of certification.  
+- **Universal verification** → Drag & drop validation in seconds.  
+- **Private enterprise key** → For professionals certifying under company identity.  
 
-- **Cryptography**: SHA-256 fingerprints + DigitalMeve invisible key.  
-- **GDPR/CCPA compliance**: No personal data stored, all processing is local.  
-- **Payment security**: Powered by Stripe, PCI DSS Level 1 compliant.  
-- **Data integrity**: Certificates remain valid even decades later.  
-- **Transparency**: Open documentation and auditable specifications.  
-
----
-
-## 9. Vision
-
-DigitalMeve is not just a tool — it is a **global standard for digital trust**.  
-Our vision is to make **every file self-authenticating**, bridging individuals, businesses, and institutions into a future where proof is invisible but trust is universal.
-
-**DigitalMeve = The PDF of digital authenticity.**
+This provides **fraud resistance, privacy, interoperability, and compliance** — in one standard.  
 
 ---
 
-## 10. Next Steps
+## 6. Technology Overview
+- **Core layers**:  
+  - Visible watermark (user-facing).  
+  - Invisible SHA-256 hash (integrity).  
+  - Invisible DigitalMeve key (binding).  
+- **On-device only**: No file ever leaves the user’s environment.  
+- **Cross-format**: PDF, DOCX, JPG, PNG, MP4, CAD, DICOM.  
+- **Compliance**: GDPR, CCPA, ISO 27001, PCI DSS.  
+- **Roadmap**: PQC migration, blockchain anchoring, enterprise dashboards.  
 
-- **v1**: Individual & Pro certification, live verification, open standard docs.  
-- **v2**: DNS binding, enterprise workflows, integrations with cloud tools.  
-- **v3**: Institutional adoption, cross-border certification, global partnerships.  
+---
+
+## 7. Use Cases
+- **Individuals**:  
+  - Certify CVs, portfolios, contracts.  
+  - Protect artworks, research papers, personal documents.  
+
+- **Professionals / Enterprises**:  
+  - Certify invoices, contracts, compliance docs.  
+  - Bind certificates to company DNS + brand watermark.  
+  - Issue official proofs across supply chains.  
+
+- **Institutions**:  
+  - Universities → Diplomas & certificates.  
+  - Governments → Licenses & permits.  
+  - Healthcare → Medical images, lab results.  
 
 ---
 
-## 11. Conclusion
+## 8. Business Model
+- **Free tier** → 5 certified files/month.  
+- **Individuals** → €9.90/month or €99/year.  
+- **Professionals** → €29.90/month or €299/year.  
+- **Enterprise add-ons** → Custom keys, dashboards, integrations.  
+- **Payments** → Stripe (PCI DSS L1, global VAT compliance, refunds included).  
 
-The world needs a new standard for authenticity in the digital age.  
-With its privacy-first approach, universal design, and uncompromising transparency, **DigitalMeve is positioned to become the invisible backbone of digital trust worldwide**.
+Pricing automatically adapts by region (FX + taxes).  
 
 ---
+
+## 9. Competitive Advantage
+- **Invisible + visible dual proof** → Stronger than watermark-only or blockchain-only approaches.  
+- **No central server** → Privacy-first, zero data retention.  
+- **Universal** → Works across file formats, borders, industries.  
+- **Developer-friendly** → Open standard, APIs, SDKs.  
+- **Future-proof** → Post-quantum roadmap, blockchain anchors optional.  
+
+---
+
+## 10. Roadmap
+- **v1 (2025)** → Generate & Verify, individuals + professionals.  
+- **v2 (2026)** → Enterprise dashboards, APIs, audit logs.  
+- **v3 (2027)** → Post-quantum crypto, blockchain anchors.  
+- **v4 (2028+)** → Regulatory recognition as *de facto global certification layer*.  
+
+---
+
+## 11. Governance & Ecosystem
+- **Open governance** → Changes via ADRs + transparent reviews.  
+- **Ecosystem partners** → Universities, enterprises, governments.  
+- **Security audits** → Mandatory for cryptographic updates.  
+- **Community-driven growth** → Contributions via GitHub, global developer adoption.  
+
+---
+
+## 12. Conclusion
+DigitalMeve is more than a tool — it is a **new global standard of trust**.  
+By combining **invisible cryptography, visible assurance, and universal interoperability**, DigitalMeve creates the **next-generation certification layer for the digital world**.  
+
+---
+
+📜 **License**: CC BY 4.0 (documentation) · MIT (reference implementations)  
+🌍 **Website**: [digitalmeve.com](https://digitalmeve.com)  
+📧 **Contact**: [support@digitalmeve.org](mailto:support@digitalmeve.org)  
+🔒 **Security reports**: [SECURITY.md](./SECURITY.md)
