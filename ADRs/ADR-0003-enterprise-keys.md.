@@ -1,0 +1,104 @@
+# ADR-0003 — Enterprise Keys & Private Signing
+
+## Status
+Accepted
+
+## Context
+Professional users (companies, law firms, agencies, institutions) require a higher level of trust and accountability than individual users.  
+For individuals, a `.MEVE` certificate includes a visible watermark and invisible proof elements (SHA-256 + DigitalMeve key).  
+
+For enterprises, however, there is an additional need:
+- Legal accountability (non-repudiation).
+- Proof that a file truly originates from a specific organization.
+- Alignment with international standards (e.g., eIDAS in EU, PKI/X.509 practices globally).
+- Compatibility with business processes (DNS ownership, compliance, audits).
+
+This requires a mechanism for enterprises to sign their documents in a way that cannot be forged, while keeping DigitalMeve independent of custody of their keys.
+
+## Decision
+We will implement **Enterprise Private Keys & Signing** with the following characteristics:
+
+1. **Key generation**
+   - Private keys are generated locally by the enterprise, on their own device or HSM (Hardware Security Module).
+   - DigitalMeve never stores, exports, or transmits private keys.
+   - Public keys can be shared for verification and published via DNS (`.well-known/meve.json`).
+
+2. **Signing process**
+   - Each document certified by an enterprise carries:
+     - The standard DigitalMeve proof elements (visible watermark, invisible SHA-256, invisible DigitalMeve key).
+     - An **enterprise signature**, generated using the enterprise’s private key.
+     - The enterprise identifier (domain, legal name) bound to the signature.
+
+3. **DNS binding**
+   - Enterprises publish their public key fingerprint at their domain (`https://example.com/.well-known/meve.json`).
+   - Verification tools check both:
+     - File-level proof (`.MEVE` integrity).
+     - Domain-level ownership (via DNS + HTTPS).
+
+4. **Certificate output**
+   - Individuals: HTML certificate with name/email if paid.
+   - Enterprises: HTML certificate including:
+     - Company legal name.
+     - DNS domain of ownership.
+     - Enterprise signature (base64, SHA-256 hashed).
+     - Proof timestamp.
+
+5. **Non-repudiation**
+   - Once a file is signed with the enterprise key, the organization cannot deny authorship (aligns with legal standards).
+   - Responsibility lies fully with the enterprise to secure its private key.
+
+## Alternatives Considered
+1. **Centralized PKI managed by DigitalMeve**  
+   ❌ Rejected: Would place liability and risk on DigitalMeve, contrary to privacy-first model.
+
+2. **Shared global key for all enterprises**  
+   ❌ Rejected: Would undermine uniqueness and accountability of each company.
+
+3. **Rely only on visible watermark**  
+   ❌ Rejected: Insufficient against forgery, no legal trust.
+
+4. **Third-party certificate authorities (CA)**  
+   ❌ Rejected: Adds complexity, vendor lock-in, breaks the independence of DigitalMeve.
+
+## Consequences
+- **Pros**
+  - Enterprise-level trust.
+  - Alignment with legal/eIDAS/PKI frameworks.
+  - Scalability: each company independently manages their keys.
+  - Keeps DigitalMeve neutral, vendor-independent.
+
+- **Cons**
+  - More complex UX for enterprises (must manage keys properly).
+  - Risk of lost keys → lost ability to sign under that identity.
+  - Additional developer documentation needed.
+
+## Implementation Plan
+1. Extend `.MEVE` certificate format to include:
+   - `enterprise_signature`
+   - `enterprise_id` (domain, legal name)
+   - `signature_algorithm` (default: SHA-256 + RSA/ECDSA)
+2. Update verifier:
+   - Validate normal DigitalMeve proofs.
+   - Validate enterprise signature against public key in DNS.
+3. Provide enterprise tooling:
+   - CLI + SDK to generate keys, publish `.well-known/meve.json`, and sign documents.
+   - Optional HSM integration.
+4. Add Enterprise Tier pricing:
+   - Subscription includes private key tooling, support, and compliance guarantees.
+5. Documentation & governance:
+   - SECURITY_MODEL updated.
+   - Standard `.MEVE` RFC (STANDARD.md) updated.
+   - Governance process for accepted algorithms (RSA, ECDSA, EdDSA).
+
+## References
+- [eIDAS Regulation (EU)](https://digital-strategy.ec.europa.eu/en/policies/eidas-regulation)
+- [NIST Digital Signature Standards (FIPS 186-5)](https://csrc.nist.gov/publications/detail/fips/186/5/final)
+- [IETF RFC 7515 — JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515)
+
+---
+
+**Decision drivers:**  
+- Legal-grade accountability for enterprises.  
+- Independence from centralized PKI.  
+- Compatibility with browser-only verification.  
+- Alignment with DigitalMeve’s mission: *Invisible proof. Visible trust.*
