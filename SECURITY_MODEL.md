@@ -7,15 +7,15 @@ It ensures that all certified files remain **authentic, private, and verifiable*
 ---
 
 ## 📖 Table of Contents
-1. Principles  
-2. Threat Model  
-3. Security Layers  
-4. Privacy by Design  
-5. Professional & Enterprise Security  
-6. Payment Security  
-7. Compliance  
-8. Future Security Roadmap  
-9. Responsible Disclosure  
+1. [Principles](#1-principles)  
+2. [Threat Model](#2-threat-model)  
+3. [Security Layers](#3-security-layers)  
+4. [Privacy by Design](#4-privacy-by-design)  
+5. [Professional & Enterprise Security](#5-professional--enterprise-security)  
+6. [Payment Security](#6-payment-security)  
+7. [Compliance](#7-compliance)  
+8. [Future Security Roadmap](#8-future-security-roadmap)  
+9. [Responsible Disclosure](#9-responsible-disclosure)  
 
 ---
 
