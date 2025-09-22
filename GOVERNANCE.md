@@ -1,127 +1,100 @@
-# Governance — DigitalMeve Standard
+# ⚖️ Governance — DigitalMeve
 
-## 1. Purpose
-
-The DigitalMeve standard defines how **invisible proofs and certifications** are embedded and verified in digital files.  
-Because it aspires to become a **global standard**, its governance must be **transparent, inclusive, and technically rigorous**.
-
-This document sets out the rules for how the standard evolves.
+DigitalMeve is an **open standard**. Its governance ensures **stability, transparency, and trust** while allowing innovation.  
+This document defines the roles, decision-making process, and long-term evolution of the project.
 
 ---
 
-## 2. Principles
-
-DigitalMeve governance follows these guiding principles:
-
-1. **Openness** — All specifications, discussions, and decisions are public.  
-2. **Neutrality** — No single company owns the standard; it is community-driven.  
-3. **Interoperability** — Implementations must remain compatible across platforms and vendors.  
-4. **Backward compatibility** — Existing certificates remain valid indefinitely.  
-5. **Transparency** — Every design decision is documented (ADR model).  
-6. **Security-first** — Any change must maintain or improve cryptographic and privacy guarantees.  
+## 🎯 Principles
+1. **Transparency** — All changes are public (GitHub Issues, Pull Requests, ADRs).
+2. **Stability** — Backward compatibility is preserved unless a major version is released.
+3. **Security-first** — Cryptographic and compliance updates require independent reviews.
+4. **Open Participation** — Anyone can contribute; decisions are based on merit and evidence.
+5. **Global Alignment** — Roadmap aligns with ISO, W3C, and international data-protection laws.
 
 ---
 
-## 3. Versioning Policy
-
-- We follow **Semantic Versioning (SemVer)**:
-  - **MAJOR** (X.0.0): breaking changes, e.g., new cryptographic primitives.  
-  - **MINOR** (0.Y.0): new features, backward-compatible.  
-  - **PATCH** (0.0.Z): bug fixes, clarifications.  
-
-- Certificates generated with older versions must remain **verifiable forever**.  
-- Deprecations require **at least 24 months of transition** before removal.  
-
----
-
-## 4. Decision Process
-
-### 4.1 Proposals
-- Changes are proposed via **GitHub Pull Requests**.  
-- Each proposal must include an **ADR (Architecture Decision Record)**.  
-- ADRs explain the problem, alternatives, decision, and consequences.  
-
-### 4.2 Review
-- PRs are reviewed by **Maintainers** (see section 5).  
-- Public discussion is encouraged before merging.  
-
-### 4.3 Voting
-- For breaking changes (MAJOR), a **supermajority (≥ 75%) of maintainers** must approve.  
-- For MINOR or PATCH, **simple majority (≥ 50%)** is sufficient.  
-
-### 4.4 Transparency
-- All accepted/rejected ADRs are stored in the `/ADRs` directory.  
-- A public changelog is maintained in `ROADMAP.md`.
-
----
-
-## 5. Roles & Responsibilities
+## 🧑‍🤝‍🧑 Roles
+- **Maintainers**  
+  - Core team responsible for reviewing and merging contributions.  
+  - Guarantee consistency with the DigitalMeve mission.  
 
 - **Contributors**  
-  Anyone can open issues, submit PRs, or suggest improvements.  
+  - Anyone submitting Issues, Pull Requests, or ADRs.  
+  - Encouraged to propose improvements and report vulnerabilities.  
 
-- **Maintainers**  
-  Trusted developers with write access to the repository.  
-  They ensure consistency, security, and alignment with governance rules.  
-
-- **Advisory Board**  
-  Representatives from academia, industry, and open-source.  
-  They provide **non-binding recommendations** for major evolutions.  
-
-- **Enterprises & Partners**  
-  Enterprises using DigitalMeve Pro may request feature extensions.  
-  Requests follow the same open ADR process.  
+- **Advisors**  
+  - Experts in cryptography, compliance, or governance providing external reviews.  
+  - Participate in audits and roadmap validation.  
 
 ---
 
-## 6. Conflict Resolution
-
-- Minor conflicts are resolved through GitHub discussion.  
-- Persistent disagreements trigger a **vote among maintainers**.  
-- If unresolved, the issue is escalated to the **Advisory Board**.  
-
----
-
-## 7. Security Governance
-
-- Any change affecting cryptography or proofs requires a **formal audit** before release.  
-- Emergency security patches bypass normal ADR but require **post-mortem ADR** after deployment.  
-- The **Security Team** maintains `SECURITY.md` and coordinates responsible disclosure.  
+## 🔄 Decision-Making
+- **Minor changes** (typos, formatting, docs) → Direct merge by maintainers.  
+- **Technical changes** (features, architecture, APIs) → Require an **ADR (Architecture Decision Record)**.  
+- **Breaking changes** (security model, certificate format, `.meve` container) →  
+  - Public discussion in Issues.  
+  - Review by at least 2 maintainers.  
+  - External expert review if security-related.  
+  - Final decision documented in ADRs.  
 
 ---
 
-## 8. Standard Evolution
-
-The standard evolves through **phased releases**:
-
-- **v1.x**: Core proof embedding (watermark + invisible SHA-256 + invisible DigitalMeve key).  
-- **v2.x**: Professional keys, enterprise integration (DNS binding, HSM support).  
-- **v3.x**: Post-quantum signatures, zero-knowledge selective disclosure.  
-
-Each phase is documented in `ROADMAP.md`.
+## 🗂 Governance Artifacts
+- **/ADRs/** — Architecture Decision Records (one file per decision).  
+- **/ROADMAP.md** — Official evolution path (living document).  
+- **/SECURITY_MODEL.md** — Cryptographic and compliance guarantees.  
+- **/GOVERNANCE.md** — This document (process and rules).  
 
 ---
 
-## 9. Transparency & Audits
-
-- All source code and specifications are public under an open license.  
-- Independent **third-party audits** will be published annually.  
-- DigitalMeve commits to **transparency reports** (government requests, vulnerabilities fixed).  
-
----
-
-## 10. Amendments to Governance
-
-- Governance changes follow the same ADR process.  
-- A **supermajority (≥ 75%) of maintainers** is required.  
-- Changes must be announced with **30 days’ public review period** before adoption.  
+## 📅 Versioning
+- **Semantic Versioning (SemVer)** is applied:  
+  - `MAJOR` — Breaking changes.  
+  - `MINOR` — New features, backward compatible.  
+  - `PATCH` — Fixes, improvements, docs.  
+- **Certificate format** follows the same rules:  
+  - v1.x — Watermark + invisible proofs.  
+  - v2.x — Enterprise keys + DNS.  
+  - v3.x — `.meve` container.
 
 ---
 
-## 11. Contact
-
-- Governance discussions: [GitHub Discussions](https://github.com/digitalmeve-standard)  
-- Security reports: see `SECURITY.md`  
-- Legal inquiries: legal@digitalmeve.org  
+## 🔐 Security Governance
+- **Vulnerability Disclosure** — via [SECURITY.md](./SECURITY.md).  
+- **Audits** — All major cryptographic changes require an independent audit.  
+- **Patch Policy** — Critical security issues patched within **72 hours**.  
+- **Transparency Log** — All security-related ADRs are logged for auditability.  
 
 ---
+
+## 🌍 Global Governance Roadmap
+- **Phase 1 (2025–2026)** — Maintainers-led governance.  
+- **Phase 2 (2027–2028)** — Advisory board with external experts.  
+- **Phase 3 (2029+)** — Formal standardization (ISO / W3C).  
+
+---
+
+## 🤝 Community Participation
+- **Issues** → Suggest improvements, ask questions, report bugs.  
+- **Pull Requests** → Contribute code, documentation, or tests.  
+- **ADRs** → Propose major architectural changes.  
+- **Working Groups** → Temporary groups for roadmap initiatives (e.g., `.meve` format).  
+
+---
+
+## 📜 License & IP
+- **Documentation** — Creative Commons Attribution 4.0 (CC BY 4.0).  
+- **Reference Implementations** — MIT License.  
+- **Trademarks** — “DigitalMeve” is a protected name; must be used according to guidelines.  
+
+---
+
+## 🧭 Governance Review
+- Governance rules are reviewed **annually**.  
+- Updates require an ADR and at least **two maintainer approvals**.  
+- Major changes are announced publicly before enforcement.
+
+---
+
+🔑 Governance ensures **DigitalMeve remains neutral, transparent, and trustworthy** while evolving into a **global certification standard**.
