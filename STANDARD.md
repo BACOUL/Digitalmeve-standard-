@@ -1,158 +1,230 @@
-# DigitalMeve Standard Specification (v1.0)
+DigitalMeve Standard (DMS)
 
-> **Status:** Draft Standard (v1.0)  
-> **License:** CC BY 4.0 (specification only)  
-> **Maintainer:** DigitalMeve Core Team  
-> **Scope:** Universal proof & certification for digital files (.MEVE)
+Invisible proof. Visible trust.
+The global standard for embedding invisible, tamper-proof certificates into any digital file.
+Files remain private — verification is universal.
 
----
-
-## 1. Introduction
-DigitalMeve defines a universal method for certifying and verifying digital files with **proofs that are both human-visible and machine-verifiable**.  
-It is designed to be lightweight, privacy-first, and interoperable across all file types.  
-
-DigitalMeve combines:
-- **Visible watermark** → human recognition
-- **Invisible cryptographic token** → SHA-256 hash bound to file
-- **DigitalMeve hidden key** → embedded invisible reference for universal validation
-- **Optional nominative certificate** → name or email of certifier (for paying individuals)
-- **Private key signature** → for enterprises, tied to company identity
 
 ---
 
-## 2. Goals
-- **Universal** → Works with any file format (.pdf, .docx, .png, etc.)
-- **Decentralized verification** → Proofs verifiable offline, without servers
-- **Privacy-first** → No file upload required (in-browser processing)
-- **Future-proof** → Cryptographic agility (post-quantum readiness)
-- **Accessible** → Free tier, individual tier (€9.90), professional tier (€29.90)
+📖 Table of Contents
+
+1. Introduction
+
+2. Terminology
+
+3. Goals
+
+4. Certificate Structure
+
+5. Certification Flow
+
+6. Security Layers
+
+7. Payment Tiers
+
+8. Compliance
+
+9. Extensibility
+
+10. Governance
+
+11. Examples
+
+12. License
+
+
 
 ---
 
-## 3. Terminology
-- **.MEVE Proof**: Bundle of cryptographic elements (visible + invisible) embedded in a file.  
-- **Certificate**: Publicly readable `.meve.certificate.html` file containing metadata and cryptographic bindings.  
-- **Invisible token**: SHA-256 hash + DigitalMeve hidden key, embedded without altering usability.  
-- **Enterprise Key**: Private key issued to professional subscribers for enterprise-level signing.
+1. Introduction
+
+The DigitalMeve Standard (DMS) defines a universal certificate format that can be invisibly embedded into any digital file.
+Its mission is to make every file globally verifiable, without servers, while ensuring privacy, simplicity, and long-term trust.
+
 
 ---
 
-## 4. Threat Model
-DigitalMeve resists:
-- File tampering (SHA-256 integrity)
-- Unauthorized duplication (proof breaks if modified)
-- Identity fraud (nominative certificate & enterprise key)
-- Longevity risks (crypto agility + algorithm upgrade plan)
+2. Terminology
+
+Certificate → The invisible proof generated and bound to a file.
+
+Visible watermark → Optional overlay (logo, code, or discreet text).
+
+Invisible SHA-256 hash → Cryptographic integrity check, embedded in the file.
+
+Invisible DigitalMeve key → Proprietary invisible marker for universal verification.
+
+Private key → Enterprise-only cryptographic key used to sign documents.
+
+Certificate Authority (CA) → The role of DigitalMeve in issuing certificates.
+
+
 
 ---
 
-## 5. Proof Model
-Every certified file contains:
-1. **Visible watermark**: “Certified by DigitalMeve” + unique hash fragment  
-2. **Invisible SHA-256 hash**: full fingerprint of file content  
-3. **Invisible DigitalMeve token**: secret marker enabling universal recognition  
-4. **Optional nominative field**: name/email of paying individual  
-5. **Enterprise signature**: digital signature with enterprise private key  
+3. Goals
 
-Certificate file (`.meve.certificate.html`) includes:
-- File hash (SHA-256)
-- Timestamp (UTC)
-- Proof metadata (watermark location, invisible token presence)
-- Certifier identity (if applicable)
-- Enterprise signature block (if applicable)
+Privacy-first → Files never leave the user’s device.
+
+Universal → Works with any file type (PDF, DOCX, JPG, PNG, MP4…).
+
+Trust at scale → Suitable for individuals, professionals, and enterprises.
+
+Future-proof → Post-quantum algorithms and new formats supported.
+
+
 
 ---
 
-## 6. Cryptography
-- **Hashing**: SHA-256 (default), SHA3-512 optional  
-- **Signature (Enterprise)**: Ed25519 (v1), Post-Quantum ready (Dilithium, v2)  
-- **Randomness**: NIST SP 800-90A DRBG  
-- **Encoding**: Base58 for compact proofs  
-- **Future-proofing**: All certificates carry an `alg` field for upgrade compatibility  
+4. Certificate Structure
+
+Every DigitalMeve-certified file includes:
+
+✅ Visible watermark → Basic layer of deterrence.
+
+✅ Invisible SHA-256 hash → Guarantees file integrity.
+
+✅ Invisible DigitalMeve key → Unique identifier for global validation.
+
+✅ Metadata (tier-specific):
+
+Free → Anonymous proof.
+
+Individuals (paid) → Name or email included in the certificate.
+
+Professionals → Enterprise private key signature + DNS binding.
+
+
+
 
 ---
 
-## 7. File Support
-DigitalMeve is format-agnostic:  
-- PDF, DOCX → watermark embedded, invisible tokens in metadata  
-- PNG, JPG → watermark overlay, invisible tokens in EXIF  
-- TXT, MD → watermark comment block, invisible tokens in hidden metadata  
+5. Certification Flow
+
+Generate:
+
+1. User uploads or drags a file into the generator (processed on-device).
+
+
+2. File is watermarked and invisible data is embedded.
+
+
+3. A certificate (HTML format) is issued, containing metadata and verification link.
+
+
+
+Verify:
+
+1. User drags & drops a file into the verifier.
+
+
+2. SHA-256 and DigitalMeve key are extracted.
+
+
+3. Validity is shown in seconds: ✅ Authentic / ❌ Tampered.
+
+
+
 
 ---
 
-## 8. Privacy & Data Protection
-- All processing in-browser (WebAssembly runtime)  
-- No files uploaded unless user explicitly shares  
-- GDPR, CCPA, ISO/IEC 27001 compliant storage (for paying tiers)  
-- Stripe used for payments (PCI-DSS Level 1)  
-- Certificates contain **only minimal metadata** (no hidden PII unless opted-in)  
+6. Security Layers
+
+🔒 Visible watermark → Immediate human-visible proof.
+
+🔑 SHA-256 hash → Strong integrity check.
+
+🧩 DigitalMeve invisible key → Proprietary invisible marker.
+
+🏢 Enterprise private keys → Company identity proof.
+
+🌐 DNS binding → Confirms organization’s domain ownership.
+
+
 
 ---
 
-## 9. Verification Flow
-Verification can be performed:
-- **Offline** → with certificate `.html` + file  
-- **Online** → via DigitalMeve verifier page (open-source client)  
-- **Enterprise integration** → DNS binding (`/.well-known/meve.json`)  
+7. Payment Tiers
 
-Steps:
-1. Load file  
-2. Extract invisible token & SHA-256  
-3. Compare with certificate  
-4. Verify optional nominative / enterprise signature  
-5. Output: Valid / Invalid / Expired  
+Free → 5 files/month, anonymous certificate.
 
----
+Individuals → €9.90/month (or yearly discount), unlimited files, personal identity in certificate.
 
-## 10. Pricing & Access
-- **Free tier** → watermark + invisible SHA-256 + invisible token  
-- **Individual tier (€9.90/month or €99/year)** → nominative certificate (name/email)  
-- **Professional tier (€29.90/month or €299/year)** → enterprise private key, bulk workflow, API integration  
-- Prices adapt to local purchasing power (regional adjustment)  
-- Payments via Stripe (PCI-DSS compliant)  
-- Refund policy aligned with EU Consumer Rights & global standards  
+Professionals → €29.90/month (or yearly discount), unlimited files, enterprise key, DNS binding, branded watermark.
+
+
+👉 See Pricing for details.
+
 
 ---
 
-## 11. Governance
-- **Spec ownership**: Open standard, CC BY 4.0  
-- **Implementation**: DigitalMeve reference stack (commercial license)  
-- **Change process**: Architecture Decision Records (ADRs) + public PRs  
-- **Versioning**: Semantic Versioning (SemVer)  
-- **Cryptographic agility**: Reserved extension field in certificates  
+8. Compliance
+
+DigitalMeve is aligned with:
+
+GDPR (EU) & CCPA (California).
+
+PSD2 & PCI DSS (Stripe payments).
+
+ISO 27001 principles.
+
+Roadmap includes post-quantum cryptography for resilience.
+
+
+👉 See Security Model.
+
 
 ---
 
-## 12. Compliance & References
-DigitalMeve aligns with:
-- **ISO/IEC 27001** (security management)  
-- **ISO/IEC 22301** (resilience)  
-- **ETSI EN 319 102** (electronic signatures)  
-- **eIDAS (EU)**  
-- **NIST SP 800-57** (crypto lifetimes)  
-- **GDPR / CCPA**  
+9. Extensibility
+
+Enterprise dashboards & APIs.
+
+Audit logs for compliance.
+
+Blockchain anchoring for long-term persistence.
+
+Support for new formats and quantum-safe algorithms.
+
+
 
 ---
 
-## 13. Roadmap
-- **v1.0** → SHA-256 + Ed25519 + HTML certificates  
-- **v1.1** → Bulk workflows + API + enterprise DNS bindings  
-- **v2.0** → Post-quantum crypto + multi-language clients  
-- **v3.0** → Full ISO submission as a recognized digital certification standard  
+10. Governance
+
+Transparent decision-making through ADRs (Architecture Decision Records).
+
+Community proposals via pull requests.
+
+Security-critical changes require audits.
+
+Semantic versioning applies (MAJOR.MINOR.PATCH).
+
+
+👉 See Governance.
+
 
 ---
 
-## Appendix A: Example Certificate (simplified)
-```html
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>DigitalMeve Certificate</title></head>
-<body>
-  <h1>DigitalMeve Certificate</h1>
-  <p>File: contract.pdf</p>
-  <p>Hash (SHA-256): ab34f9...e91c</p>
-  <p>Issued: 2025-09-22T14:02:00Z</p>
-  <p>Certifier: john.doe@example.com</p>
-  <p>Enterprise Signature: [Ed25519-Signature]</p>
-</body>
-</html>
+11. Examples
+
+📄 Sample certificate (PDF)
+
+🌐 DNS binding example
+
+✅ Verification data
+
+
+
+---
+
+12. License
+
+Documentation → CC BY 4.0
+
+Reference implementations → MIT License
+
+
+
+---
