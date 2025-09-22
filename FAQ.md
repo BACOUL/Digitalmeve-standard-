@@ -1,131 +1,160 @@
 # FAQ — DigitalMeve
 
-A structured FAQ for individuals, professionals, and developers.  
-DigitalMeve is building the global standard for invisible proof and visible trust.
+DigitalMeve is the global standard for invisible, tamper-proof certification of digital files. This FAQ addresses developers, professionals, and individual users.
 
 ---
 
-## 1. General Questions
-
-**Q: What is DigitalMeve?**  
-DigitalMeve is a global standard for file certification. It embeds invisible cryptographic proofs inside your documents while generating a verifiable certificate you can share. Proofs are **universal, transparent, and privacy-first**.
-
-**Q: Is it free to use?**  
-Yes. Individuals can certify up to **5 files per month** for free. Paid subscriptions unlock higher limits and professional features.
-
-**Q: Do you store my files?**  
-No. Files are processed **entirely in your browser**. DigitalMeve never stores, uploads, or has access to your files.
-
-**Q: What file types are supported?**  
-All file types. Certificates are format-agnostic: PDF, DOCX, PNG, MP4, ZIP, etc.
-
-**Q: How is this different from a PDF signature or blockchain?**  
-- PDF signatures are format-specific; DigitalMeve is universal.  
-- Blockchains are heavy and public; DigitalMeve is light, private, and works offline.  
-- DigitalMeve combines **visible watermark + invisible cryptographic anchors**.
-
----
-
-## 2. For Individuals
-
-**Q: How many documents can I certify for free?**  
-Up to **5 documents per month**. Each document receives a verifiable DigitalMeve certificate.
-
-**Q: What happens if I exceed the free limit?**  
-You can subscribe to **DigitalMeve Individual** (9.90 €/month or yearly equivalent) to certify unlimited documents under your personal identity (name or email).
-
-**Q: What information is included in my certificate?**  
-- File name and SHA-256 hash  
-- Timestamp (UTC)  
-- Certificate ID  
-- Issuer type (anonymous, personal, or professional)  
-- Invisible watermark embedded in your file  
-
-**Q: Can I use DigitalMeve certificates in legal disputes?**  
-Yes. Certificates are based on cryptographic proofs (SHA-256) and timestamped, which are widely accepted in legal and compliance contexts. Legal validity may vary by jurisdiction.
+## Table of Contents
+1. What is DigitalMeve?
+2. How does the invisible proof work?
+3. What types of files are supported?
+4. What information is embedded in a certificate?
+5. How do I verify a certified file?
+6. Does DigitalMeve store my files?
+7. Is DigitalMeve compliant with GDPR and other data protection laws?
+8. How secure is DigitalMeve?
+9. What is the difference between free, individual, and professional plans?
+10. Can I integrate DigitalMeve into my app or workflow?
+11. How does DNS binding work for professionals?
+12. What happens if DigitalMeve disappears?
+13. How does DigitalMeve handle payments?
+14. What if I cancel my subscription?
+15. What if I am a developer and want to contribute?
+16. Can governments or regulators use DigitalMeve?
+17. How future-proof is the cryptography?
+18. Who governs the DigitalMeve standard?
 
 ---
 
-## 3. For Professionals & Enterprises
-
-**Q: How does DNS-based certification work?**  
-Professional domains can publish a `.well-known/meve.json` file. This binds your domain name to your DigitalMeve certificates, proving authenticity at the organizational level.
-
-**Q: How are private keys generated and used?**  
-Each Pro/Enterprise account receives a **dedicated private key** for signing certificates. Keys never leave the user’s device; they are generated and stored locally or in HSM-compliant modules.
-
-**Q: Can I automate bulk certification (API/SDK)?**  
-Yes. Pro and Enterprise plans include API endpoints and SDKs to certify thousands of files within workflows.
-
-**Q: Is the service compliant with audit/legal standards?**  
-Yes. DigitalMeve follows **ISO 27001**, **GDPR**, and payment industry standards (PCI-DSS). Certificates are auditable and designed to be court-admissible.
-
-**Q: How do subscription and billing work?**  
-- **Pro plan**: 29.90 €/month or yearly equivalent.  
-- **Enterprise**: custom pricing with SLA, API scaling, and advanced security features.  
-- Payments are processed via **Stripe**, fully compliant with global payment regulations.
+## 1. What is DigitalMeve?
+DigitalMeve is a global standard for embedding invisible, tamper-proof certificates into any file (PDF, DOCX, JPG, MP4, etc.). It ensures authenticity and integrity without exposing private data.
 
 ---
 
-## 4. For Developers
+## 2. How does the invisible proof work?
+Each certified file includes:
+- A **visible watermark** (optional, depending on plan).
+- An **invisible SHA-256 hash** integrated into the document.
+- An **invisible DigitalMeve key** to bind the certification.
+- For paying users: metadata (name/email or company reference).
+- For professionals: signatures with enterprise private keys + DNS binding.
 
-**Q: How do I verify a `.MEVE` certificate programmatically?**  
-Certificates are JSON-based and can be verified with a single command (`meve verify`) or by importing our SDK.
-
-**Q: Is there an SDK or API available?**  
-Yes. SDKs are available in **JavaScript/TypeScript**, with Python and Go in progress. REST API endpoints are documented in the developer portal.
-
-**Q: What does the certificate format look like?**  
-Certificates are structured JSON objects, including:  
-- File hash (SHA-256)  
-- Metadata (timestamp, issuer type)  
-- Verification anchors (DNS, optional signatures)  
-
-**Q: How are updates to the standard managed?**  
-All changes follow **Architecture Decision Records (ADRs)**. Updates are versioned (semver) and publicly discussed on GitHub.
-
-**Q: Can I embed verification inside my app/site?**  
-Yes. Verification libraries are lightweight (<50kb) and can run client-side without servers.
+This proof cannot be altered without invalidating the file.
 
 ---
 
-## 5. Security & Privacy
-
-**Q: What is embedded in the document?**  
-- **Visible watermark** (DigitalMeve Certified)  
-- **Invisible SHA-256 digest** embedded in metadata  
-- **Invisible DigitalMeve key** (unique anchor)  
-
-**Q: How secure is the SHA-256 hashing?**  
-SHA-256 is an industry-standard cryptographic hash function, considered collision-resistant. It is trusted globally for integrity proofs.
-
-**Q: What happens if my private key is compromised?**  
-Keys can be revoked. Revocation lists are published by DigitalMeve and checked during verification.
-
-**Q: Is DigitalMeve GDPR-compliant?**  
-Yes. No personal data is stored unless you opt in (e.g. pro subscription). All data is encrypted in transit and processed locally.
-
-**Q: How are payments secured?**  
-Payments are handled by **Stripe** with PCI-DSS compliance. DigitalMeve never stores card details.
+## 3. What types of files are supported?
+All major formats:
+- Documents: PDF, DOCX, TXT
+- Images: JPG, PNG
+- Media: MP4, WAV
+- Archives: ZIP
+DigitalMeve is format-agnostic: if you can open it, you can certify it.
 
 ---
 
-## 6. Support & Community
-
-**Q: How can I report a bug or vulnerability?**  
-Use the [GitHub Security Policy](./SECURITY.md) or email **security@digitalmeve.com**. Responsible disclosure is required.
-
-**Q: Can I become an early partner?**  
-Yes. Apply via the [Early Partner Program](./PARTNERS.md) to test integrations and influence the roadmap.
-
-**Q: How do I contribute to the standard?**  
-- Fork the repo  
-- Open a Pull Request with an ADR  
-- Follow the [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines  
-
-**Q: Where can I find updates and the roadmap?**  
-Roadmap is public in [ROADMAP.md](./ROADMAP.md). Announcements are posted on GitHub and the DigitalMeve newsletter.
+## 4. What information is embedded in a certificate?
+Depending on plan:
+- **Free**: watermark + SHA-256
+- **Individuals**: watermark + SHA-256 + invisible key + certificate with name/email
+- **Professionals**: watermark + SHA-256 + enterprise key + DNS binding + branded certificate
 
 ---
 
-📌 **Reminder:** DigitalMeve does not replace legal advice. Always check local regulations before relying on certificates for compliance or litigation.
+## 5. How do I verify a certified file?
+Drag and drop the file into the [Verify tool](https://digitalmeve.com/verify). Verification runs entirely in your browser, no upload required.
+
+---
+
+## 6. Does DigitalMeve store my files?
+No. DigitalMeve is privacy-first:
+- Processing runs locally in the browser.
+- No file storage.
+- Only metadata necessary for certificates is embedded within the file itself.
+
+---
+
+## 7. Is DigitalMeve compliant with GDPR and other data protection laws?
+Yes. Compliance includes:
+- GDPR (EU)
+- CCPA (California)
+- PSD2 / PCI DSS (Stripe payments)
+- ISO 27001 principles
+No personal data is shared without user consent.
+
+---
+
+## 8. How secure is DigitalMeve?
+- Based on proven cryptography (SHA-256, elliptic curves).
+- Independent verification: no hidden servers or lock-in.
+- Certificates cannot be forged or altered without detection.
+
+---
+
+## 9. What is the difference between free, individual, and professional plans?
+- **Free**: 5 certified files/month.
+- **Individuals**: €9.90/month or €99/year → unlimited files, named certificate.
+- **Professionals**: €29.90/month or €299/year → unlimited files, enterprise private key, DNS binding, branded certificates.
+
+---
+
+## 10. Can I integrate DigitalMeve into my app or workflow?
+Yes. An API and SDKs are planned (see Roadmap v2). Current workflows use the web app.
+
+---
+
+## 11. How does DNS binding work for professionals?
+Professional subscribers can bind their domain (e.g., `company.com`) to their DigitalMeve key, so every certified file can be verified as belonging to that domain.
+
+---
+
+## 12. What happens if DigitalMeve disappears?
+DigitalMeve is designed as an open standard:
+- Certificates remain valid without servers.
+- Verification code is open source.
+- Any developer can build independent verifiers.
+
+---
+
+## 13. How does DigitalMeve handle payments?
+Payments are handled via **Stripe** with full PCI DSS compliance. Pricing adapts to local currencies based on location.
+
+---
+
+## 14. What if I cancel my subscription?
+- You keep all previously certified files: they remain valid forever.
+- You lose the ability to generate new certificates beyond the free tier.
+
+---
+
+## 15. What if I am a developer and want to contribute?
+- Open issues or pull requests on GitHub.
+- Follow [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Major changes must include an ADR (Architecture Decision Record).
+
+---
+
+## 16. Can governments or regulators use DigitalMeve?
+Yes. Governments, universities, and institutions can:
+- Certify diplomas, legal documents, licenses.
+- Issue enterprise keys for public use.
+DigitalMeve’s governance ensures neutrality and long-term support.
+
+---
+
+## 17. How future-proof is the cryptography?
+Roadmap includes:
+- Post-quantum cryptography (v3).
+- Optional blockchain anchoring.
+- Continuous security audits.
+
+---
+
+## 18. Who governs the DigitalMeve standard?
+Governance is open and transparent:
+- Decisions recorded in `/ADRs`.
+- Community-driven contributions via GitHub.
+- Mandatory audits for security-related changes.
+- Long-term stewardship to ensure neutrality.
+
+---
