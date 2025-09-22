@@ -1,83 +1,72 @@
-# DigitalMeve Roadmap
+# 📅 Roadmap — DigitalMeve
 
-This roadmap outlines the evolution of **DigitalMeve** — from a working MVP to a recognized global standard for digital authenticity.  
-It is designed to give developers, partners, and institutions a transparent view of our progress.
-
----
-
-## 1. Introduction
-
-DigitalMeve introduces the **.MEVE certificate** as the invisible yet verifiable proof of authenticity for any digital file.  
-The roadmap defines the milestones needed to grow from a functional prototype into a **worldwide trust standard**, comparable in impact to the role PDF played for documents.
+DigitalMeve evolves in multiple phases, with a clear ambition: to become the **PDF of certification worldwide**.  
+Each step strengthens adoption (Individuals → Professionals → Enterprises → Institutions → ISO Standardization).
 
 ---
 
-## 2. Version 1 — MVP (Available Today)
-
-✔ Certify any file locally with three layers of protection:  
-- Visible watermark  
-- Invisible SHA-256 fingerprint  
-- Invisible DigitalMeve signature key  
-
-✔ Free & paid plans:  
-- **Free**: 5 certifications / month (anonymous)  
-- **Individual**: €9.90 / month or annual plan (includes name/email in certificate)  
-- **Pro**: €29.90 / month or annual plan (private key & enterprise-level features)  
-
-✔ Certificates delivered in **HTML format**, human-readable and instantly verifiable.  
-✔ **Verification tool** directly in the browser (no upload, no storage).  
-✔ Stripe integration for secure global payments.  
+## ✅ v1 — Current (2025)
+- **Core features**:
+  - Generate & verify certificates.
+  - Visible watermark, invisible SHA-256 hash, invisible DigitalMeve key.
+  - Universal HTML certificate.
+- **Products**:
+  - Web application (certify / verify).
+  - Freemium: 5 free certificates per month.
+- **Payments**:
+  - Stripe (Individuals €9.90 / Professionals €29.90).
+- **Compliance**:
+  - GDPR (EU), CCPA (California), PCI DSS, ISO 27001 principles.
 
 ---
 
-## 3. Version 2 — Professional Expansion
-
-🔐 **DNS binding for companies** → link an official domain to all their certified documents.  
-🔑 **Private key issuance** → Pro users receive a cryptographic key for signing documents under their company name.  
-📜 **Advanced metadata** → issuer name, organization details, timestamp, all verifiable.  
-💳 **Localized pricing** → adapt monthly fees based on user’s country (global fairness).  
-📊 **Dashboards** for individuals and professionals to track their certifications.  
-
----
-
-## 4. Version 3 — Enterprise & Institutional Adoption
-
-⚙️ **API & SDKs** → allow direct integration of .MEVE certification into apps, CMS, or business workflows.  
-🌍 **Multi-language support** → French, English, Spanish, German, Japanese (progressively expanded).  
-📑 **Compliance extensions** → GDPR, HIPAA, and regional regulations support.  
-🤝 **Partnerships** → universities, banks, legal firms, and creative platforms.  
-🔍 **Independent audits** → transparency reports, public ADRs, and security reviews.  
+## 🚀 v2 — Expansion (2026)
+- **Enterprise Suite**:
+  - Professional dashboard (tracking, stats, audits).
+  - API & SDK for SaaS / ERP integration.
+  - Tamper-proof audit logs.
+- **Security**:
+  - Enterprise private key signing.
+  - DNS binding for professional identity.
+- **Adoption**:
+  - Targeted campaigns for agencies, law firms, and creators.
+  - Documentation in multiple languages.
 
 ---
 
-## 5. Version 4 — Global Standardization
-
-🌐 **Standardization process** → submission to ISO/W3C for recognition as a global digital trust layer.  
-🏛 **Government adoption** → discussions with ministries, justice systems, and certification authorities.  
-✈️ **Cross-border recognition** → ensure .MEVE certificates are admissible worldwide.  
-📌 **De facto standard** → DigitalMeve becomes to authenticity what PDF is to documents.  
-
----
-
-## 6. Guiding Principles
-
-- **Simplicity**: always one-click certification & verification.  
-- **Transparency**: open documentation, clear governance, and auditability.  
-- **Universality**: works with all file types, devices, and platforms.  
-- **Privacy-first**: no central storage, no exposure of user files.  
-- **Longevity**: certificates remain valid across decades and technology changes.  
+## 🌍 v3 — Standardization (2027)
+- **New native format: `.meve`**
+  - Standardized container including: original file + invisible proof + embedded certificate.
+  - Verifiable offline and via open-source tools.
+- **Interoperability**:
+  - Plugins for office suites (Microsoft, Google, LibreOffice).
+  - Adobe / PDF integration.
+- **Trust network**:
+  - Partnerships with registrars, notaries, e-signature platforms.
+  - Recognition by public institutions.
 
 ---
 
-## 7. Roadmap Governance
-
-- This roadmap is **living**: updated quarterly with real progress.  
-- Major changes require an **ADR (Architecture Decision Record)** and community review.  
-- A dedicated **GOVERNANCE.md** defines how proposals are accepted or rejected.  
+## 🔐 v4 — Advanced Security (2028)
+- **Post-quantum cryptography**:
+  - Migration to quantum-resistant algorithms.
+- **Blockchain anchors**:
+  - Optional decentralized notarization (Ethereum, Tezos).
+- **Zero-Knowledge Proofs**:
+  - Verification without exposing sensitive content.
 
 ---
 
-## 8. Long-Term Vision
+## 🏛 v5 — Global Standard (2029+)
+- **ISO / W3C standardization**:
+  - Formalization of `.meve` as a global open standard.
+- **Legal interoperability**:
+  - Recognition in audits, courts, and public procurement.
+- **Ecosystem**:
+  - Open-source tools, public APIs, official extensions.
+  - Native integration into operating systems and browsers.
 
-DigitalMeve’s ultimate goal is to become the **universal certificate of authenticity** for digital content —  
-a technology trusted equally by individuals, professionals, and institutions worldwide.
+---
+
+📌 This roadmap is **living and iterative**.  
+All proposed changes must be discussed via **Issues** and validated through **ADRs** (Architecture Decision Records).
