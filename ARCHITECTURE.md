@@ -1,294 +1,173 @@
-# DigitalMeve Architecture
+# DigitalMeve — Architecture
 
-**Version:** v1.0 (Draft)  
-**Status:** Public Specification  
-**License:** CC BY 4.0
-
-This document defines the end-to-end architecture of DigitalMeve: how files are certified and verified, how professional keys and DNS binding work, and how the HTML certificate is structured. It is intended for developers, auditors, and enterprises. Proprietary details of invisible embeddings (how the SHA-256 and the DigitalMeve tag are physically inserted into files) are intentionally confidential and NOT disclosed here; this document specifies only the public contract and verifier behavior.
-
-## 1. Purpose & Scope
-
-- Provide a universal, privacy-first method to **certify** and **verify** any digital file.
-- Guarantee **integrity** (SHA-256), **authenticity** (signatures for Pro), and **durability** (human- and machine-readable certificate).
-- Keep all core operations **on-device** (no upload).
-- Support **Individuals** (free and paid) and **Professionals** (Pro/Enterprise).
-- Maintain a clear separation between **public standard** and **confidential implementations** of on-file protections.
-
-## 2. Design Goals & Constraints
-
-- **On-device first**: hashing, embedding, signing, and verification run locally.
-- **Universal**: works for PDF, DOCX, PNG/JPG, ZIP, TXT, MP4, and more.
-- **Open verification**: anyone can verify with public tools; no hidden servers required.
-- **Future-proof**: stable HTML certificate + JSON machine block; DNS binding for organizational trust.
-- **No encryption in core**: confidentiality is out of scope; the core is proof of integrity/authenticity.
-
-## 3. Core Concepts
-
-- **Visible watermark**: a small, human-readable “DigitalMeve Certified” mark; for Pro, may include organization name or reference.  
-- **Invisible SHA-256**: the file’s SHA-256 digest is embedded invisibly.  
-- **Invisible DigitalMeve tag (MEVE patch)**: proprietary marker improving tamper resistance.  
-- **Certificate (HTML)**: a sidecar file (default) `filename.ext.meve.html` containing both a human view and a machine-readable JSON block used by verifiers.  
-- **Issuer types**: `individual` (anonymous for free; name/email for paid) and `professional` (domain-bound, signed).  
-- **KID**: key identifier for Pro signatures and rotation.  
-- **Verification levels**: L0 (watermark), L1 (hash), L2 (Pro signature + DNS), L3 (enhanced on-file protections).
-
-## 4. System Components
-
-- **Client App (Web/UI/CLI)**: performs hashing, applies visible and invisible protections, builds the certificate HTML, and (for Pro) signs locally.
-- **Public Verifier**: parses the certificate HTML, recomputes the hash, optionally resolves DNS/`.well-known`, and reports verdict.
-- **DNS /.well-known**: public discovery of Pro public keys and rotation windows.
-- **(Optional) Enterprise APIs**: batch certification and verification endpoints (hash-based), never uploading file contents.
-
-## 5. Certification Flow (Generate)
-
-### 5.1 Inputs
-- Local file (`file.ext`), any supported type.
-- Issuer context:
-  - **Individual (Free)**: anonymous (no issuer identity).
-  - **Individual (Paid)**: issuer name or email included in certificate.
-  - **Professional**: domain + private key (ed25519 recommended), `kid`, optional display name.
-
-### 5.2 Steps (all on-device)
-1. **Pre-validation**: mime/type/size checks.
-2. **Hash**: compute `SHA-256(file_bytes)` → lowercase hex.
-3. **On-file protections**:
-   - Apply **visible watermark** (file-type dependent).
-   - Embed **invisible SHA-256**.
-   - Embed **invisible DigitalMeve tag**.
-   - Note: exact embedding algorithms are confidential; the public contract only requires that these protections be present.
-4. **Certificate build**:
-   - Prepare machine JSON block with: version, file name, mime, sha256, algorithm, timestamp (UTC ISO-8601), issuer_type, issuer (if any), issuer_display_name (Pro), `kid` (Pro), `sig_alg` (Pro).
-   - For **Professionals**: build canonical signing input (see §9) and sign with the issuer private key; attach signature to the machine block.
-5. **Certificate HTML**:
-   - Render human-readable view (issuer, file, hash, timestamp, call-to-verify).
-   - Embed machine block in `<script type="application/meve+json">...</script>`.
-6. **Outputs**:
-   - **Certified file**: same extension as input, now carrying visible and invisible protections.
-   - **Certificate**: `file.ext.meve.html` sidecar (default). Embedding certificate inside the file is possible for some formats but sidecar is the reference method.
-
-## 6. Verification Flow (Verify)
-
-### 6.1 Inputs
-- A file alone, or  
-- A file plus its sidecar certificate `file.ext.meve.html`.
-
-### 6.2 Steps (all on-device)
-1. **Certificate discovery**:
-   - If sidecar is provided, parse it.
-   - If only the file is provided and supports embedded certificate, extract it; otherwise prompt for the sidecar.
-2. **Parse machine block**: read the JSON from `<script type="application/meve+json">`.
-3. **Hash check (L1)**: recompute SHA-256 over the provided file bytes and compare to the machine block’s `file_hash`.
-4. **Signature check (L2, Pro only)**:
-   - If `issuer_type=professional`, resolve public key using DNS TXT or `/.well-known/meve.json` (see §10).
-   - Rebuild canonical signing input (see §9) and verify signature with the discovered public key.
-5. **On-file protections (L3, optional)**:
-   - If the verifier supports proprietary checks, evaluate presence/consistency of invisible protections; otherwise ignore.
-6. **Verdict**:
-   - `VALID` → all mandatory checks pass (L1 always; L2 for Pro).
-   - `INVALID` → hash mismatch, invalid signature, or inconsistent issuer context.
-   - `UNKNOWN` → missing certificate/sidecar or unable to resolve Pro keys.
-   - Return level `L0|L1|L2|L3`, reasons, and details (issuer, kid, ts, algs).
-
-## 7. File Type Bindings
-
-DigitalMeve supports a broad set of formats. The contract is uniform; embeddings differ internally per format.
-
-- **PDF / DOCX**: visible watermark (page overlay or header/footer), invisible hash/tag in metadata/custom properties.  
-- **Images (PNG, JPG, TIFF)**: visible watermark overlay (optional), invisible metadata blocks and/or steganographic carriers.  
-- **Other (ZIP, TXT, MP4, binaries)**: invisible metadata blocks where available; otherwise rely on sidecar certificate binding by filename.
-
-**Confidentiality note**: the exact embedding carriers, redundancy, and robustness parameters (e.g., resistance to recompression, cropping, resampling) are proprietary and not disclosed publicly.
-
-## 8. Certificate (HTML) Structure
-
-A DigitalMeve certificate is a self-contained HTML file with a human section and a machine section.
-
-### 8.1 Human section (example)
-- Title, logo, “DigitalMeve Certificate”.
-- File name, mime type, SHA-256 (shortened for display), timestamp.
-- Issuer display:
-  - Individual (free): “Anonymous”.
-  - Individual (paid): “Issued by: <Name/Email>”.
-  - Professional: “Issued by: <Organization>”.
-- Call to action: “Verify now”.
-
-## 8.2 Enterprise Extensions
-
-Enterprises may require additional layers of trust, audit, and integration. DigitalMeve supports these extensions:
-
-- **Private Key Integration**: Enterprises receive a dedicated private key pair. Documents can be signed under their corporate identity.
-- **DNS Binding**: A DNS TXT record at `_meve.company.com` binds the enterprise certificate root to the company domain.
-- **Visible Watermark**: Every enterprise-certified document may include an optional visible watermark (company logo or reference code).
-- **Custom Metadata**: Enterprises can attach business metadata (invoice ID, project code, audit number) directly into the .MEVE certificate.
-- **Batch Processing**: Large-scale certification pipelines (e.g. 10k+ documents per day) supported via offline/bulk APIs.
-- **Compliance Mode**: Optionally log hash references into a compliance ledger (external or self-hosted).
-
-These extensions remain interoperable: any DigitalMeve verification client can still verify enterprise documents, even without the extra metadata.
+Invisible proof. Visible trust.  
+This document describes the technical architecture of **DigitalMeve**, the global standard for embedding invisible, tamper-proof certificates inside any file format (PDF, DOCX, JPG, PNG, MP4, etc.), with verification that is instant, universal, and private.
 
 ---
 
-## 9. File Types & Embedding Strategy
-
-DigitalMeve supports both binary and textual formats.
-
-- **PDF**: SHA-256 digest is calculated on the full file. A visible watermark is embedded in a reserved region. The invisible `.MEVE` marker is appended in an unused metadata section.
-- **DOCX**: Certificate data injected as a custom XML part; invisible SHA-256 anchor embedded in document properties.
-- **Images (PNG/JPG)**: Invisible steganographic marker inserted (subtle, non-destructive). SHA-256 stored in metadata.
-- **ZIP**: Entire archive hashed. A `.meve.json` sidecar can be added inside.
-- **Generic binary**: Pure certificate file (`.meve.json`) accompanies the binary.
-
----
-
-## 10. Verification Flow
-
-Verification clients must support:
-
-1. **File Input**  
-   User drags & drops the file into the verifier (browser or CLI).
-2. **Hash Extraction**  
-   - Compute SHA-256 of the full binary.  
-   - Extract embedded invisible `.MEVE` marker.  
-   - (If enterprise mode) Verify DNS TXT binding and corporate signature.
-3. **Certificate Lookup**  
-   Certificate is embedded in the file itself (no central lookup).  
-   Verifier validates JSON schema.
-4. **Validation Steps**  
-   - Compare recomputed SHA-256 with certificate.  
-   - Check timestamp validity (ISO 8601, UTC).  
-   - Verify signature (if present).  
-   - Report result: ✅ valid / ❌ invalid.
-5. **Result Presentation**  
-   Display certificate in a human-readable HTML format:  
-   - File name  
-   - Date, time  
-   - Issuer (anonymous, individual, or enterprise)  
-   - SHA-256 (truncated + full)  
-   - Valid/invalid badge
+## 📖 Table of Contents
+- [1. Overview](#1-overview)
+- [2. Core Principles](#2-core-principles)
+- [3. File Processing Pipeline](#3-file-processing-pipeline)
+  - [3.1 Proof Embedding](#31-proof-embedding)
+  - [3.2 Watermark Layer](#32-watermark-layer)
+  - [3.3 Hashing & Keys](#33-hashing--keys)
+- [4. Certificate Format](#4-certificate-format)
+  - [4.1 HTML Certificate](#41-html-certificate)
+  - [4.2 Metadata Fields](#42-metadata-fields)
+  - [4.3 Enterprise Extensions](#43-enterprise-extensions)
+- [5. Verification Flow](#5-verification-flow)
+  - [5.1 Local Verification](#51-local-verification)
+  - [5.2 Universal Access](#52-universal-access)
+  - [5.3 Failure Cases](#53-failure-cases)
+- [6. DNS Binding (Pro/Enterprise)](#6-dns-binding-proenterprise)
+- [7. Keys & Signatures](#7-keys--signatures)
+  - [7.1 Individual Certificates](#71-individual-certificates)
+  - [7.2 Professional Certificates](#72-professional-certificates)
+  - [7.3 Enterprise Private Keys](#73-enterprise-private-keys)
+- [8. Security Layers](#8-security-layers)
+  - [8.1 Visible Proofs](#81-visible-proofs)
+  - [8.2 Invisible Proofs](#82-invisible-proofs)
+  - [8.3 Multi-layer Verification](#83-multi-layer-verification)
+- [9. Scalability & Interoperability](#9-scalability--interoperability)
+- [10. Future Extensions](#10-future-extensions)
 
 ---
 
-## 11. Cryptographic Considerations
+## 1. Overview
+DigitalMeve allows any file to contain **three levels of protection**:
+1. **Visible watermark** → signals the file is certified.  
+2. **Invisible SHA-256 hash** → ensures integrity.  
+3. **Invisible DigitalMeve key** → guarantees authenticity across time and formats.  
 
-- **Hashing Algorithm**: SHA-256 (NIST standard, collision resistant).  
-- **Signatures**: Ed25519 recommended (fast, strong, open).  
-- **Timestamp**: Generated client-side; can be anchored in enterprise mode.  
-- **Randomness**: Nonces used when embedding invisible watermarks to prevent pattern attacks.  
-- **Forward Compatibility**: Hash algorithm is versioned (MEVE v1: SHA-256; MEVE v2: SHA-3, etc.).  
-- **Key Management**: Enterprises receive private keys securely (via HSM or PKCS#12 bundle). DigitalMeve does not store keys.
-
----
-
-## 12. Threat Model
-
-- **Adversary Goal**: Forge a DigitalMeve certificate for a file they did not create.  
-- **Mitigations**:  
-  - SHA-256 prevents preimage/collision forgery.  
-  - Invisible watermark ensures tampering detection.  
-  - Enterprise private keys prevent impersonation.  
-  - No central DB eliminates “single server” compromise.  
-
-- **Residual Risks**:  
-  - If enterprise private key is leaked, adversary may forge under that identity. Mitigation: rotate keys, revoke via DNS.  
-  - If file formats are exotic, invisible embedding may fail. Mitigation: fall back to `.meve.json` sidecar.  
+Verification works instantly, without servers. Certificates are generated in **HTML format** for transparency and long-term accessibility.
 
 ---
 
-## 13. Privacy Guarantees
-
-- Files never leave the client device.  
-- No uploads, no remote logs.  
-- Certificates themselves contain only non-sensitive metadata (hashes, timestamps, optional issuer).  
-- Enterprise mode may add identifying metadata, but this is under the enterprise’s control.  
-- Verification can be done fully offline.
-
----
-
-## 14. Governance
-
-- **Specification Ownership**: DigitalMeve Standard is open.  
-- **Changes**: Proposed via ADRs (Architecture Decision Records).  
-- **Versioning**: Semantic Versioning (SemVer).  
-- **Consensus**: Major changes require review and approval.  
-- **Interoperability**: Implementations must pass conformance tests.
+## 2. Core Principles
+- **Privacy-first** → All processing runs locally (browser or SDK).  
+- **Universality** → Works with any file type (.pdf, .docx, .jpg, .png, .mp4).  
+- **Zero friction** → No account required for free certification.  
+- **Open standard** → Documentation, specs, and governance are public.  
+- **Enterprise ready** → DNS binding, private keys, and branding.  
 
 ---
 
-## 15. Roadmap
+## 3. File Processing Pipeline
 
-- **v1.0 (Current)**:  
-  - SHA-256 + invisible marker  
-  - Visible watermark for PDFs/images  
-  - Certificate JSON structure  
-  - Browser + CLI reference implementations
+### 3.1 Proof Embedding
+When a file is certified:
+- The original content remains **unchanged and private**.  
+- An **invisible SHA-256 hash** is embedded.  
+- An **invisible DigitalMeve key** is inserted for universal verification.  
 
-- **v1.1 (Planned)**:  
-  - Enterprise private key support  
-  - DNS binding  
-  - Batch certification API
+### 3.2 Watermark Layer
+- A **visible watermark** (DigitalMeve seal) is added.  
+- For enterprises, an **optional branded watermark** can be used.  
 
-- **v2.0 (Future)**:  
-  - Alternative hash algorithms (SHA-3, BLAKE3)  
-  - Ledger anchoring (optional)  
-  - Rich metadata profiles
+### 3.3 Hashing & Keys
+- SHA-256 is used for file fingerprinting.  
+- Invisible keys are tied to the certificate, not the file format.  
 
 ---
 
-## 16. Example Certificate (HTML)
+## 4. Certificate Format
 
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>DigitalMeve Certificate</title>
-    <style>
-      body { font-family: sans-serif; background: white; color: black; }
-      .valid { color: green; font-weight: bold; }
-      .invalid { color: red; font-weight: bold; }
-    </style>
-  </head>
-  <body>
-    <h1>DigitalMeve Certificate — VALID ✅</h1>
-    <p><strong>File:</strong> invoice-2025Q1.pdf</p>
-    <p><strong>Date:</strong> 2025-09-18</p>
-    <p><strong>Time:</strong>00:46:34 UTC</p>
-    <p><strong>Issuer:</strong> Example Corp (via DNS binding)</p>
-    <p><strong>SHA-256:</strong> 78bd6b1c...e2364ace149</p>
-    <p><strong>MEVE Version:</strong> 1</p>
-  </body>
-</html>
-## 17. Appendix
+### 4.1 HTML Certificate
+Each certification generates a companion file:
+- The `.meve.html` contains metadata, signature, and validation status.  
+- It can be opened in any browser.  
 
-### 17.1 File Extensions
-- **`.meve.json`** — Detached certificate (sidecar) for any file type.
-- **`.pdf` / `.docx` / `.jpg` / `.png`** — Native embedding of watermark + invisible marker.
-- **`.zip`** — Archive certification with embedded `.meve.json`.
+### 4.2 Metadata Fields
+Standard fields:
+- File name + hash (SHA-256)  
+- Timestamp of certification  
+- Certificate issuer (individual name/email, or enterprise reference if applicable)  
+- DigitalMeve signature  
 
-### 17.2 Terminology
-- **Invisible Marker**: Cryptographic anchor (SHA-256 hash + Meve code) embedded in the file metadata or unused structure, undetectable by normal viewers.  
-- **Visible Watermark**: Human-visible overlay (e.g., “DigitalMeve Certified” or company logo) displayed on the file for transparency.  
-- **Certificate**: A `.meve.json` (machine-readable) or `.html` (human-readable) proof of authenticity bound to the file.  
-- **Issuer**: Entity that created the certificate (anonymous, individual, or enterprise).  
-- **Enterprise Key**: Private key issued to professional customers, allowing signing on behalf of a company domain.  
-
-### 17.3 Open Source Reference
-- **GitHub Repository**: Official reference implementations, examples, and conformance tests are available.  
-- **Sample Files**: Test PDFs, DOCX, and images provided with pre-certified examples.  
-- **CLI Tools**: Basic `generate` and `verify` commands for developers.  
-- **Browser Verifier**: Web-based drag-and-drop tool for end users.  
-
-### 17.4 Contact & Governance
-- **Contact**: info@digitalmeve.com  
-- **Governance Model**:  
-  - Open contribution via GitHub pull requests and ADRs.  
-  - Semantic versioning (SemVer) for all spec updates.  
-  - Community review required for breaking changes.  
-
-### 17.5 Compliance Notes
-- **GDPR / Privacy**: Files never leave the user’s device; no central server logs are required.  
-- **Auditability**: All enterprise extensions (DNS, private keys, visible watermarks) remain backward-compatible with the open verifier.  
-- **Longevity**: Certificates are designed to remain valid across decades, file formats, and software ecosystems.  
+### 4.3 Enterprise Extensions
+- DNS binding (`.well-known/meve.html`)  
+- Private enterprise key reference  
+- Optional legal statements  
 
 ---
 
-🔒 This appendix is the authoritative reference for implementers, partners, and auditors.
+## 5. Verification Flow
+
+### 5.1 Local Verification
+Users drag & drop a file into the DigitalMeve verifier.  
+- The embedded SHA-256 is extracted.  
+- The invisible DigitalMeve key is verified.  
+- The visible watermark is compared.  
+
+### 5.2 Universal Access
+Verification can happen:
+- In browser (Web verifier).  
+- With CLI / SDK tools.  
+- Via enterprise APIs.  
+
+### 5.3 Failure Cases
+If a file fails verification:
+- Tampered content → mismatch with SHA-256.  
+- Invalid signature → fails DigitalMeve key check.  
+- Expired/invalid enterprise binding → DNS verification fails.  
+
+---
+
+## 6. DNS Binding (Pro/Enterprise)
+- Enterprises can bind their domain name to DigitalMeve certificates.  
+- A file certified by `company.com` can be independently verified through DNS records.  
+- DNS entries are stored at `https://company.com/.well-known/meve.html`.  
+
+---
+
+## 7. Keys & Signatures
+
+### 7.1 Individual Certificates
+- Free tier → anonymous proof only.  
+- Paid tier → name/email visible in certificate.  
+
+### 7.2 Professional Certificates
+- Includes **named certificate**.  
+- Metadata embeds the professional’s reference.  
+
+### 7.3 Enterprise Private Keys
+- Each enterprise receives a **private key** for internal signing.  
+- Used to issue branded certificates.  
+- Enables audit logs and compliance.  
+
+---
+
+## 8. Security Layers
+
+### 8.1 Visible Proofs
+- Standard watermark for all files.  
+- Optional branded watermark for enterprises.  
+
+### 8.2 Invisible Proofs
+- Embedded SHA-256 (integrity).  
+- Embedded DigitalMeve key (authenticity).  
+
+### 8.3 Multi-layer Verification
+- Local hash validation.  
+- Certificate signature validation.  
+- DNS binding validation (Pro/Enterprise).  
+
+---
+
+## 9. Scalability & Interoperability
+- Works across all formats (PDF, DOCX, JPG, PNG, MP4).  
+- Certificates are **HTML-based**, ensuring long-term readability.  
+- Architecture designed for **post-quantum cryptography upgrades**.  
+
+---
+
+## 10. Future Extensions
+- **Post-quantum algorithms** (Kyber/Dilithium).  
+- **Blockchain anchoring** for optional timestamping.  
+- **Enterprise dashboards** for bulk certification.  
+- **Cross-platform SDKs** (Node.js, Python, Rust).  
+
+---
+
+📌 DigitalMeve architecture is designed to balance **privacy, universality, and enterprise compliance**, while keeping certain implementation details **confidential** for security reasons.
