@@ -1,142 +1,131 @@
-# DigitalMeve – Frequently Asked Questions (FAQ)
+# FAQ — DigitalMeve
 
-_Last updated: 2025-09-22_
+A structured FAQ for individuals, professionals, and developers.  
+DigitalMeve is building the global standard for invisible proof and visible trust.
 
 ---
 
-## 1. General
+## 1. General Questions
 
-**Q: What is DigitalMeve in one sentence?**  
-A: DigitalMeve is the open global standard for certifying digital files — embedding invisible cryptographic proofs directly inside documents, while keeping them private, portable, and universally verifiable.
+**Q: What is DigitalMeve?**  
+DigitalMeve is a global standard for file certification. It embeds invisible cryptographic proofs inside your documents while generating a verifiable certificate you can share. Proofs are **universal, transparent, and privacy-first**.
 
-**Q: How is DigitalMeve different from a signed PDF or traditional timestamping?**  
-A: Unlike static signatures or external timestamps, DigitalMeve integrates:  
-- A visible watermark (for universal recognition).  
-- An invisible SHA-256 fingerprint embedded inside the file.  
-- An invisible DigitalMeve proof key.  
-This makes the proof tamper-evident, device-independent, and long-lasting — without depending on centralized storage.
+**Q: Is it free to use?**  
+Yes. Individuals can certify up to **5 files per month** for free. Paid subscriptions unlock higher limits and professional features.
 
-**Q: Is DigitalMeve really an open standard?**  
-A: Yes. The specification is public, versioned, and governed through community feedback and **Architecture Decision Records (ADRs)**. Anyone can implement a generator or verifier.
+**Q: Do you store my files?**  
+No. Files are processed **entirely in your browser**. DigitalMeve never stores, uploads, or has access to your files.
+
+**Q: What file types are supported?**  
+All file types. Certificates are format-agnostic: PDF, DOCX, PNG, MP4, ZIP, etc.
+
+**Q: How is this different from a PDF signature or blockchain?**  
+- PDF signatures are format-specific; DigitalMeve is universal.  
+- Blockchains are heavy and public; DigitalMeve is light, private, and works offline.  
+- DigitalMeve combines **visible watermark + invisible cryptographic anchors**.
 
 ---
 
 ## 2. For Individuals
 
-**Q: How much does it cost?**  
-A: 9.90 €/month or annual subscription with discount. Prices are adjusted per region/country following Stripe standards and local regulations.
+**Q: How many documents can I certify for free?**  
+Up to **5 documents per month**. Each document receives a verifiable DigitalMeve certificate.
 
-**Q: Are my files stored by DigitalMeve?**  
-A: No. All processing happens locally in your browser or client. We never upload, retain, or index your files.
+**Q: What happens if I exceed the free limit?**  
+You can subscribe to **DigitalMeve Individual** (9.90 €/month or yearly equivalent) to certify unlimited documents under your personal identity (name or email).
 
-**Q: Can I cancel or request a refund?**  
-A: Yes. Subscriptions can be canceled anytime. Refunds follow Stripe and consumer protection standards (e.g. 14-day withdrawal in the EU).
+**Q: What information is included in my certificate?**  
+- File name and SHA-256 hash  
+- Timestamp (UTC)  
+- Certificate ID  
+- Issuer type (anonymous, personal, or professional)  
+- Invisible watermark embedded in your file  
 
-**Q: Can I certify personal files like CVs, invoices, photos or artworks?**  
-A: Absolutely. The Individual plan is designed for creators, freelancers, students, and anyone who needs personal digital proof.
-
-**Q: Will my name or email appear in the certificate?**  
-A: Yes, if you are a paying individual subscriber, your identifier (name or email) will be embedded in the certificate for traceability.
-
----
-
-## 3. For Professionals
-
-**Q: What’s the difference between Individual and Pro plans?**  
-A: Pro (29.90 €/month or annual) includes:  
-- Private company key for signing at organization level.  
-- Visible watermark + invisible proof + enterprise certificate.  
-- Workflow integration (ERP, CRM, CMS).  
-- Bulk certification support.  
-- Priority support and compliance documentation.
-
-**Q: How does the company private key work?**  
-A: Each enterprise account receives a unique cryptographic keypair. The private key is used to sign files under the company identity; the public key is distributed for universal verification.
-
-**Q: Can I integrate DigitalMeve into my workflows?**  
-A: Yes. APIs and CLI tools are provided for bulk operations, automation, and system integration.
-
-**Q: Which file types are supported?**  
-A: DigitalMeve works with all major formats: PDF, DOCX, XLSX, PNG, JPG, MP4, and others. The proof layer is format-agnostic.
-
-**Q: Is DigitalMeve legally compliant?**  
-A: Yes. It aligns with **eIDAS (EU), GDPR, ISO 27001, and global cryptographic best practices**. Enterprise customers can request compliance reports.
+**Q: Can I use DigitalMeve certificates in legal disputes?**  
+Yes. Certificates are based on cryptographic proofs (SHA-256) and timestamped, which are widely accepted in legal and compliance contexts. Legal validity may vary by jurisdiction.
 
 ---
 
-## 4. Technical & Security
+## 3. For Professionals & Enterprises
 
-**Q: What cryptographic algorithms are used?**  
-A: SHA-256 for fingerprints, elliptic curve cryptography for signatures, and TLS/HTTPS for transport. Algorithms are modern, auditable, and regularly reviewed.
+**Q: How does DNS-based certification work?**  
+Professional domains can publish a `.well-known/meve.json` file. This binds your domain name to your DigitalMeve certificates, proving authenticity at the organizational level.
 
-**Q: What happens if a file is modified after certification?**  
-A: Any modification invalidates the embedded SHA-256 fingerprint. Verification will fail, clearly signaling tampering.
+**Q: How are private keys generated and used?**  
+Each Pro/Enterprise account receives a **dedicated private key** for signing certificates. Keys never leave the user’s device; they are generated and stored locally or in HSM-compliant modules.
 
-**Q: How long are DigitalMeve certificates valid?**  
-A: Indefinitely. Proofs are self-contained and do not depend on external servers.
+**Q: Can I automate bulk certification (API/SDK)?**  
+Yes. Pro and Enterprise plans include API endpoints and SDKs to certify thousands of files within workflows.
 
-**Q: Can I verify without your website?**  
-A: Yes. We provide open-source verification tools (CLI and libraries). Anyone can confirm authenticity offline.
+**Q: Is the service compliant with audit/legal standards?**  
+Yes. DigitalMeve follows **ISO 27001**, **GDPR**, and payment industry standards (PCI-DSS). Certificates are auditable and designed to be court-admissible.
 
-**Q: What exactly is in a `.meve.html` certificate?**  
-A: A human-readable HTML containing the proof metadata, embedded cryptographic signature, and links for independent verification. Sensitive implementation details remain private.
-
----
-
-## 5. Privacy & GDPR
-
-**Q: Do you collect my files?**  
-A: No. Files never leave your device.
-
-**Q: Do you comply with GDPR and global privacy laws?**  
-A: Yes. DigitalMeve is built with privacy by design. No personal data is processed beyond what is necessary for billing (via Stripe).
-
-**Q: Where is data processed?**  
-A: Payments and minimal account data are processed by Stripe with data residency in the EU/US depending on user location. Files remain local.
-
-**Q: What if I want to delete my data?**  
-A: You can request deletion at any time. We comply with GDPR Article 17 (right to erasure).
+**Q: How do subscription and billing work?**  
+- **Pro plan**: 29.90 €/month or yearly equivalent.  
+- **Enterprise**: custom pricing with SLA, API scaling, and advanced security features.  
+- Payments are processed via **Stripe**, fully compliant with global payment regulations.
 
 ---
 
-## 6. Payment & Billing
+## 4. For Developers
 
-**Q: What payment methods are supported?**  
-A: Stripe supports major credit/debit cards, Apple Pay, Google Pay, SEPA, and others depending on your region.
+**Q: How do I verify a `.MEVE` certificate programmatically?**  
+Certificates are JSON-based and can be verified with a single command (`meve verify`) or by importing our SDK.
 
-**Q: Do you support crypto payments?**  
-A: Not at launch, but this is under consideration.
+**Q: Is there an SDK or API available?**  
+Yes. SDKs are available in **JavaScript/TypeScript**, with Python and Go in progress. REST API endpoints are documented in the developer portal.
 
-**Q: How does annual billing work?**  
-A: You can choose annual payment upfront (with discount) or monthly recurring billing.
+**Q: What does the certificate format look like?**  
+Certificates are structured JSON objects, including:  
+- File hash (SHA-256)  
+- Metadata (timestamp, issuer type)  
+- Verification anchors (DNS, optional signatures)  
 
-**Q: What is your refund policy?**  
-A: Refunds are processed in line with consumer law and Stripe’s global standards.
+**Q: How are updates to the standard managed?**  
+All changes follow **Architecture Decision Records (ADRs)**. Updates are versioned (semver) and publicly discussed on GitHub.
 
----
-
-## 7. Standard & Community
-
-**Q: How can I contribute to the standard?**  
-A: Contributions are welcome via GitHub pull requests. Changes must follow the **CONTRIBUTING.md** guidelines and ADR process.
-
-**Q: What are ADRs?**  
-A: Architecture Decision Records document major technical decisions, ensuring traceability and accountability over time.
-
-**Q: Who governs DigitalMeve?**  
-A: A lightweight governance model with maintainers, ADR reviewers, and community input. Transparency and neutrality are key principles.
-
-**Q: Can other companies adopt DigitalMeve?**  
-A: Yes. The standard is open and royalty-free. Companies can integrate or extend DigitalMeve in their products without restriction.
+**Q: Can I embed verification inside my app/site?**  
+Yes. Verification libraries are lightweight (<50kb) and can run client-side without servers.
 
 ---
 
-## 8. Support
+## 5. Security & Privacy
 
-- 📧 Email: support@digitalmeve.org  
-- 🌐 Website: [digitalmeve.org](https://digitalmeve.org)  
-- 🐙 GitHub: [github.com/digitalmeve](https://github.com/digitalmeve)  
+**Q: What is embedded in the document?**  
+- **Visible watermark** (DigitalMeve Certified)  
+- **Invisible SHA-256 digest** embedded in metadata  
+- **Invisible DigitalMeve key** (unique anchor)  
+
+**Q: How secure is the SHA-256 hashing?**  
+SHA-256 is an industry-standard cryptographic hash function, considered collision-resistant. It is trusted globally for integrity proofs.
+
+**Q: What happens if my private key is compromised?**  
+Keys can be revoked. Revocation lists are published by DigitalMeve and checked during verification.
+
+**Q: Is DigitalMeve GDPR-compliant?**  
+Yes. No personal data is stored unless you opt in (e.g. pro subscription). All data is encrypted in transit and processed locally.
+
+**Q: How are payments secured?**  
+Payments are handled by **Stripe** with PCI-DSS compliance. DigitalMeve never stores card details.
 
 ---
 
-> DigitalMeve is committed to being the **global reference for digital file certification**: invisible, private, universal.
+## 6. Support & Community
+
+**Q: How can I report a bug or vulnerability?**  
+Use the [GitHub Security Policy](./SECURITY.md) or email **security@digitalmeve.com**. Responsible disclosure is required.
+
+**Q: Can I become an early partner?**  
+Yes. Apply via the [Early Partner Program](./PARTNERS.md) to test integrations and influence the roadmap.
+
+**Q: How do I contribute to the standard?**  
+- Fork the repo  
+- Open a Pull Request with an ADR  
+- Follow the [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines  
+
+**Q: Where can I find updates and the roadmap?**  
+Roadmap is public in [ROADMAP.md](./ROADMAP.md). Announcements are posted on GitHub and the DigitalMeve newsletter.
+
+---
+
+📌 **Reminder:** DigitalMeve does not replace legal advice. Always check local regulations before relying on certificates for compliance or litigation.
