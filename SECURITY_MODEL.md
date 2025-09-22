@@ -1,96 +1,155 @@
-# Security Model
+# DigitalMeve Security Model
 
-DigitalMeve protects files through a layered model of **visible and invisible proofs**.  
-This document defines the security guarantees, cryptographic primitives, and trust boundaries of the `.MEVE` standard.
-
----
-
-## 1. Threat Model
-
-DigitalMeve assumes an open and adversarial environment:
-
-- Attackers may intercept, copy, or attempt to forge certified files.  
-- Attackers may try to tamper with metadata, certificates, or checksums.  
-- Attackers may attempt to impersonate legitimate issuers.  
-
-Out of scope:  
-- Physical theft of private keys by negligence.  
-- Malicious behavior from a fully trusted issuer (collusion).  
-- User devices already compromised by malware at certification time.
+DigitalMeve is designed as a **global trust layer** for file certification and verification.  
+Security, privacy, and compliance are not features — they are the foundation of the system.  
+This document outlines the **threat model, cryptographic design, operational safeguards, and compliance framework**.
 
 ---
 
-## 2. Security Layers
+## 1. Principles
 
-Every file certified with DigitalMeve contains **three complementary layers of protection**:
+1. **Privacy First**  
+   - Files never leave the user’s device during certification.  
+   - All hashing and watermark embedding happens locally in the browser.  
 
-### 2.1 Visible watermark
-- Each certified file embeds a visible watermark (“DigitalMeve”) on render.  
-- This ensures human recognition of certification.  
-- For professional accounts, the watermark may include the company name or reference.  
-- Watermarking is resilient but not designed as the primary proof — it is a **deterrent and a visible marker**.
+2. **Zero Trust Architecture**  
+   - No central storage of certified files.  
+   - Only certificates and metadata are public/verifiable.  
 
-### 2.2 Invisible SHA-256 fingerprint
-- Every file is hashed locally with **SHA-256**.  
-- The digest is invisibly embedded inside the file, in a location that does not alter its functionality or readability.  
-- This fingerprint ensures **bit-level integrity**: any modification produces a different hash and invalidates the certificate.  
-- Verifiers recompute the SHA-256 and compare against the embedded value.
+3. **Transparency**  
+   - Algorithms are documented and auditable.  
+   - Certificates are simple, portable, and human-readable.  
 
-### 2.3 DigitalMeve invisible key
-- Each file also contains a **DigitalMeve invisible key** — a unique marker proving the file was generated with the DigitalMeve standard.  
-- This prevents “look-alike” or fake certificates created by third parties.  
-- For individuals (paid plans), the issuer’s name or email is recorded in the certificate metadata (HTML-based).  
-- For professionals, a **private key pair** is issued. Files are signed with the private key, enabling client/partner verification against the public key (DNS or `.well-known/meve.json` binding).
+4. **Global Compliance**  
+   - Follows **GDPR**, **CCPA**, **PCI-DSS**, and international standards for data and payments.  
+   - Adaptable to local regulatory requirements.  
 
 ---
 
-## 3. Certificate (HTML)
+## 2. Threat Model
 
-Certificates are exported as lightweight HTML documents:  
-- Human-readable layout (issuer, date, file hash, algorithm).  
-- Machine-readable embedded JSON block for interoperability.  
-- Verifiable in any modern browser without external dependencies.  
+### 2.1 Attacker Goals
+- Forge a certificate.  
+- Modify a file without detection.  
+- Impersonate a professional/company.  
+- Exploit billing or payment weaknesses.  
+- Leak user personal data.  
 
----
-
-## 4. Professional Keys
-
-- Each Pro account receives a **unique private key**.  
-- Certification embeds the signature alongside the file hash and metadata.  
-- Verification is done by resolving the issuer’s DNS or retrieving the public key via `.well-known/meve.json`.  
-- This guarantees that **documents truly originate from the stated business**.
-
----
-
-## 5. Data Handling
-
-- **On-device only**: no file is uploaded to DigitalMeve servers.  
-- The system only produces fingerprints, metadata, and certificates.  
-- This ensures compliance with **privacy-by-design** and GDPR.
+### 2.2 Protection Strategy
+- **Cryptographic proofs**: SHA-256 fingerprints, invisible DigitalMeve markers, optional enterprise patches.  
+- **Private keys for professionals**: enterprise signing with DNS binding.  
+- **Browser-only hashing**: eliminates file exfiltration.  
+- **Watermark visible + hidden markers**: tamper-proof dual layer.  
+- **Payment isolation via Stripe**: no card data stored by DigitalMeve.  
 
 ---
 
-## 6. Security Guarantees
+## 3. Cryptographic Design
 
-- **Integrity**: SHA-256 detects any modification.  
-- **Authenticity**: DigitalMeve key + Pro private key binding prevents forgery.  
-- **Transparency**: Certificates are auditable HTML with embedded JSON.  
-- **Privacy**: Files never leave the device.  
-- **Longevity**: Based on open algorithms and simple data structures.
-
----
-
-## 7. Residual Risks
-
-- A fully compromised endpoint at certification time may produce a false proof.  
-- Visible watermarks may be removed by heavy editing, but invisible layers remain verifiable.  
-- Private key misuse by professionals remains the responsibility of the key holder.  
+- **Hash Function:** SHA-256 (NIST-approved, widely audited).  
+- **Invisible Proof:**  
+  - Embedded SHA-256 fingerprint in file metadata layer.  
+  - Invisible DigitalMeve signature embedded as secondary marker.  
+- **Visible Proof:**  
+  - Watermark with truncated SHA-256 visible on document.  
+- **Professional Keys:**  
+  - Each pro account receives a **private signing key**.  
+  - Certificates are signed with company reference + DNS proof.  
+- **Longevity:**  
+  - Certificates remain valid across formats and decades (hashes are future-proof).  
 
 ---
 
-## 8. Conclusion
+## 4. User Data Protection
 
-DigitalMeve’s layered security — watermark, SHA-256 fingerprint, and invisible DigitalMeve key — provides **global, future-proof proof of authenticity**.  
-Professionals gain cryptographic signatures bound to their DNS identity, while individuals benefit from lightweight, anonymous certification.  
+- **No file storage.** DigitalMeve never hosts user files.  
+- **Minimal data collection.** Only required billing data (via Stripe).  
+- **Encryption in transit.** TLS 1.3 enforced across all communications.  
+- **Encryption at rest.** Metadata and certificates stored encrypted (AES-256).  
+- **Data deletion.** Users can request full erasure (GDPR compliance).  
+- **Anonymity option.** Free users and some individual plans operate without identity linking.  
 
-The model balances **simplicity, privacy, and cryptographic rigor** to enable DigitalMeve as the **universal certification standard**.
+---
+
+## 5. Payment Security
+
+- **Processor:** Stripe (PCI-DSS Level 1 certified).  
+- **Tokenization:** No credit card data touches DigitalMeve servers.  
+- **Strong Customer Authentication (SCA):** Supported in EU.  
+- **Localized Compliance:** VAT/GST/sales tax handled automatically.  
+- **Refund policy:** Transparent, aligned with EU and US directives.  
+
+---
+
+## 6. Governance & Compliance
+
+- **GDPR:** Data minimization, explicit consent, right to be forgotten.  
+- **CCPA:** Right to access, deletion, and opt-out for California users.  
+- **SOC 2 (planned):** For enterprise-level clients requiring auditability.  
+- **ISO 27001 alignment:** Security management processes follow ISO best practices.  
+- **Auditability:** Cryptographic proofs are verifiable by third parties.  
+
+---
+
+## 7. Operational Security
+
+- **Infrastructure:**  
+  - Hosting on globally distributed, secure providers.  
+  - DDoS mitigation in place.  
+- **Access Control:**  
+  - Role-based access with MFA.  
+  - Strict separation of duties.  
+- **Monitoring:**  
+  - Continuous security monitoring.  
+  - Incident response plan aligned with NIST CSF.  
+- **Backups:**  
+  - Daily encrypted backups of metadata and certificates.  
+  - No user file backups (as files are never stored).  
+
+---
+
+## 8. Advanced Protections
+
+- **For Professionals:**  
+  - Private key management with rotation policies.  
+  - DNS-based domain verification.  
+  - Enterprise watermark + invisible patch.  
+- **For Individuals (Paid):**  
+  - Certificate embeds certifier name or email.  
+  - Personal signature included.  
+- **For Free Users:**  
+  - Anonymous certificate, watermark only.  
+
+---
+
+## 9. Risk Mitigations
+
+| Risk                        | Mitigation                                               |
+|-----------------------------|----------------------------------------------------------|
+| File tampering              | SHA-256 + invisible marker + visible watermark           |
+| Certificate forgery         | Professional keys + DNS binding                          |
+| Data leaks                  | No storage + encryption + minimal data collection        |
+| Payment fraud               | Stripe PCI-DSS Level 1 + SCA                             |
+| Insider threats             | RBAC + MFA + limited access                              |
+| Long-term validity          | Open standard, auditable certificates                    |
+
+---
+
+## 10. Roadmap for Security Evolution
+
+- **v1:** Browser-only hashing, SHA-256, invisible proof, Stripe billing.  
+- **v2:** Advanced enterprise signing, SOC 2 audit, API for bulk certification.  
+- **v3:** Zero-knowledge verification, PQC-ready (post-quantum cryptography).  
+
+---
+
+## 11. Summary
+
+DigitalMeve delivers **bank-grade security with zero friction**:  
+- No files stored.  
+- SHA-256 + invisible markers.  
+- Stripe-powered secure payments.  
+- GDPR/CCPA/PCI-DSS compliance.  
+- Enterprise-ready keys, DNS binding, and long-term trust.  
+
+It is not just a product — it is a **new global standard for digital certification**.
