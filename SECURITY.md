@@ -1,109 +1,107 @@
-# Security Policy
+# Security Policy — DigitalMeve
 
-## Supported Versions
-
-DigitalMeve is under **continuous development**. Security updates are provided for the following branches:
-
-| Version      | Supported |
-|--------------|------------|
-| Main (`main`)| ✅ Always |
-| Releases ≥ v1.0.0 | ✅ Supported |
-| Pre-release / Experimental branches | ❌ Not guaranteed |
-
-If you are using an **unsupported branch**, please upgrade to the latest stable version to continue receiving security updates.
+DigitalMeve takes security with the utmost seriousness.  
+Our mission is to provide a **global standard for invisible proofs and certified files** — privacy-first, tamper-proof, and interoperable.  
+This document describes how to report vulnerabilities, how we handle them, and the scope of our security program.
 
 ---
 
-## Reporting a Vulnerability
+## 📌 Scope
 
-We take security issues very seriously.  
-If you discover a vulnerability in **DigitalMeve**, please report it responsibly:
+The following assets are covered by this policy:
 
-- **Private email**: [security@digitalmeve.org](mailto:security@digitalmeve.org)  
-- **Do NOT** open a public GitHub issue for security problems.  
-- Include as much detail as possible:
-  - Steps to reproduce the vulnerability  
-  - Affected versions or configurations  
-  - Possible impact and severity  
-  - Suggested mitigations (if any)  
+- **DigitalMeve Standard** (`.meve` certified files such as `.pdf`, `.docx`, `.jpg`).
+- **DigitalMeve Certificates** (HTML-based signed proofs).
+- **DigitalMeve Website & Services** (`digitalmeve.com`, verification portal, file protection portal).
+- **Payment & Subscription System** (Stripe integration for Individuals & Professionals).
+- **Developer Tooling** (future APIs, SDKs, CLI).
 
-We aim to acknowledge all reports within **72 hours** and provide a remediation plan within **7 working days**.
-
----
-
-## Disclosure Process
-
-1. **Triage**  
-   - Security team reviews the report and assesses severity (CVSS scoring).  
-   - Assigns a tracking ID.  
-
-2. **Fix**  
-   - Developers work on a private branch to fix the issue.  
-   - Additional security audits may be performed.  
-
-3. **Release**  
-   - A patched version is released.  
-   - Security advisories are published on GitHub and [digitalmeve.org/security](https://digitalmeve.org/security).  
-
-4. **Disclosure**  
-   - Once the fix is released, we credit the reporter (if desired).  
-   - A CVE may be requested and assigned.  
+Out of scope:
+- Personal environment or browser configuration issues.
+- Denial-of-Service (DoS) attacks without proof of exploitability.
+- Spam, phishing, or social engineering against staff or users.
+- Visual/UI issues that do not impact integrity or confidentiality.
 
 ---
 
-## Scope of Security Issues
+## 🔐 Reporting a Vulnerability
 
-Examples of issues we consider **in scope**:
-- Cryptographic vulnerabilities (hashing, signatures, invisible watermarking)  
-- Certificate or proof forgery  
-- Insecure storage or leakage of private keys  
-- Authentication/authorization flaws  
-- Supply chain or dependency risks  
+If you discover a vulnerability, please **do not create a public GitHub Issue**.  
+Instead, report it privately:
 
-Examples of issues **not in scope**:
-- Bugs not affecting security (UI glitches, typos)  
-- Vulnerabilities in dependencies not maintained by DigitalMeve (but we may forward)  
-- Denial of Service (DoS) via extreme inputs, unless critical  
+- 📧 Email: **security@digitalmeve.org**
+- 🔑 GPG Key: [Public Key Download](https://digitalmeve.org/pgp-key.txt) (use to encrypt sensitive reports)
 
----
-
-## Coordinated Disclosure
-
-We follow a **Coordinated Vulnerability Disclosure (CVD)** model:  
-- We ask reporters to keep vulnerabilities **private** until a fix is released.  
-- We commit to transparency once users are protected.  
-- DigitalMeve may grant **bug bounty rewards** (future program) for valid high-severity reports.  
+Please include:
+- A detailed description of the vulnerability.
+- Steps to reproduce (proof of concept if possible).
+- Impact assessment (which component, severity, potential misuse).
+- Suggested fix (optional, but appreciated).
 
 ---
 
-## Security Best Practices for Users
+## ⏱ Response Timeline
 
-To protect your own usage of DigitalMeve:
-
-- Always use the **latest version** of the software  
-- Verify `.MEVE` certificates only via trusted sources  
-- For enterprises:  
-  - Use your private keys securely  
-  - Rotate signing keys regularly  
-  - Enforce internal policies for certificate issuance  
+- **Acknowledgement**: within **48 hours** of receiving the report.  
+- **Initial assessment**: within **5 business days** (CVE severity rating if applicable).  
+- **Fix or mitigation**: within **30 days** for critical/high vulnerabilities.  
+- **Disclosure**: coordinated with the reporter once the patch is deployed.
 
 ---
 
-## Contact
+## ✅ Responsible Disclosure Policy
 
-- Security email: [security@digitalmeve.org](mailto:security@digitalmeve.org)  
-- Emergency contact: see [GOVERNANCE.md](GOVERNANCE.md)  
-
-For all security-related communications, **encryption (PGP)** is available.  
-Fingerprint and public key are published at: [digitalmeve.org/pgp](https://digitalmeve.org/pgp)
+- Please give us a **reasonable time** (30 days) to fix the issue before public disclosure.  
+- Do not exploit or weaponize the vulnerability beyond what is necessary to prove it.  
+- We will credit security researchers who follow this policy in our **Hall of Fame**.  
+- We will never pursue legal action against good-faith, responsible disclosure.
 
 ---
 
-## Attribution
+## 🛡 Compliance & Security Principles
 
-This policy is inspired by security practices of:
-- [GitHub Security Policy](https://docs.github.com/en/code-security/security-advisories)  
-- [Kubernetes Security Response Committee](https://kubernetes.io/security/)  
-- [CNCF Security Guidelines](https://github.com/cncf/foundation/blob/main/security)  
+DigitalMeve aligns with **global best practices**:
 
-Adapted to the unique mission of **DigitalMeve** as a **global standard of invisible proof and certification**.
+- **GDPR** (EU) & **CCPA** (California) — user privacy guaranteed.  
+- **PCI DSS / PSD2** — for all Stripe payment integrations.  
+- **ISO 27001 principles** — information security management.  
+- **Cryptographic best practices**:
+  - SHA-256 invisible fingerprint inside every certified file.
+  - DigitalMeve invisible key embedded per file.
+  - Visible watermark for transparency.
+  - Private enterprise keys for Professional plans.
+- **Defense in Depth**:
+  - TLS 1.3 everywhere.
+  - Zero server storage for user files (all processing is client-side).
+  - Regular penetration testing and dependency scans.
+
+---
+
+## 🏆 Recognition Program
+
+We recognize the contribution of security researchers who help keep DigitalMeve safe.  
+If you responsibly disclose a vulnerability and it is confirmed, you may be added to our **Security Hall of Fame**.
+
+Hall of Fame will be published here:  
+👉 [digitalmeve.org/security/hall-of-fame](https://digitalmeve.org/security/hall-of-fame)
+
+---
+
+## ⚖️ Legal Safe Harbor
+
+- DigitalMeve will not pursue legal action against researchers who follow this policy in good faith.  
+- Security testing must be **non-disruptive** and avoid affecting real users.  
+- Safe Harbor applies worldwide.
+
+---
+
+## 📬 Contact
+
+- Email: [security@digitalmeve.org](mailto:security@digitalmeve.org)  
+- GPG Key: [digitalmeve.org/pgp-key.txt](https://digitalmeve.org/pgp-key.txt)  
+- Website: [https://digitalmeve.com](https://digitalmeve.com)
+
+---
+
+**DigitalMeve — Invisible Proof. Visible Trust.**  
+Together, we build a global security standard.
