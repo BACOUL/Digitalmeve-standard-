@@ -1,116 +1,99 @@
-# DigitalMeve Pricing Model
+# Pricing
 
-DigitalMeve follows a **transparent, global pricing model** designed for both individuals and professionals.  
-All subscriptions include core certification features, with additional value layers for paying users.
+## Overview
+DigitalMeve offers transparent, predictable, and globally-compliant pricing.  
+Our goal is to make invisible proof **accessible to everyone** — from individuals certifying personal documents to enterprises securing large-scale workflows.  
 
----
-
-## 1. Free Plan (Entry / Trial)
-
-- **Limit:** 5 certifications per month  
-- **Certificate:** Anonymous, browser-only  
-- **Watermark:** Visible SHA-256 watermark  
-- **Invisible markers:** Embedded DigitalMeve signature (basic level)  
-- **Support:** Community support only  
-- **Audience:** Students, casual creators, testers  
+All payments are processed via **Stripe**, ensuring compliance with **PCI DSS**, **PSD2**, and global data protection regulations.  
+Prices are automatically adapted to the country of the customer to respect local purchasing power and tax frameworks (VAT, GST, sales tax).
 
 ---
 
-## 2. Individual Plan
+## Pricing Plans
 
-- **Price:** €9.90/month or €99/year (billed annually)  
-- **Limit:** Unlimited certifications  
-- **Certificate personalization:** Name or email of certifier embedded in certificate  
-- **Markers:**  
-  - Visible watermark (SHA-256)  
-  - Invisible DigitalMeve signature  
-- **Support:** Priority support  
-- **Audience:** Freelancers, creators, professionals needing personal certification  
+| Tier          | Monthly Price | Yearly Price (Save ~2 months) | Features                                                                 |
+|---------------|--------------|-------------------------------|---------------------------------------------------------------------------|
+| **Free**      | €0           | –                             | 5 certified files/month, watermark + SHA-256 hash, basic verification     |
+| **Individual**| €9.90        | €99                           | Unlimited files, name/email in certificate, invisible DigitalMeve key     |
+| **Professional** | €29.90    | €299                          | Unlimited files, enterprise private key, DNS binding, branded watermark   |
 
----
-
-## 3. Professional Plan
-
-- **Price:** €29.90/month or €299/year (billed annually)  
-- **Limit:** Unlimited certifications  
-- **Enterprise-grade features:**  
-  - Private key issued for enterprise signing  
-  - Certificates tied to company identity (DNS binding, name displayed)  
-  - Invisible DigitalMeve enterprise patch  
-  - SHA-256 visible watermark  
-- **Support:** Premium support with SLA  
-- **Audience:** Agencies, law firms, studios, SMEs  
+👉 All subscriptions can be canceled at any time.  
+👉 Yearly plans offer cost savings for long-term users.  
+👉 Prices are shown in EUR (€) — automatically adjusted per region (USD, GBP, JPY, etc.).
 
 ---
 
-## 4. Enterprise (Custom)
+## Features by Tier
 
-- **Price:** Custom pricing (volume licensing)  
-- **Features:**  
-  - Bulk certification API  
-  - Dedicated DNS integrations  
-  - Audit-ready reporting  
-  - Multi-user management  
-  - Advanced governance features  
-- **Audience:** Large companies, governments, certification bodies  
+### Free
+- **Limit**: 5 certified files per month.  
+- **Security**: Visible watermark, invisible SHA-256 hash, invisible DigitalMeve key.  
+- **Verification**: Public drag & drop verification tool.  
+- **Support**: Community support only.  
 
----
+### Individual (€9.90/month or €99/year)
+- **Unlimited certification** of files (PDF, DOCX, JPG, PNG, MP4…).  
+- **Identity binding**: Name or email included in certificate metadata.  
+- **Invisible protection**: SHA-256 hash + DigitalMeve key.  
+- **Proof portability**: Valid across time, formats, and devices.  
+- **Support**: Email support, priority responses.  
 
-## 5. Billing & Payment
-
-- All payments processed via **Stripe** (PCI-DSS compliant).  
-- Accepted payment methods: credit card, debit card, SEPA, localized wallets (Apple Pay, Google Pay, etc.).  
-- Subscriptions auto-renew monthly or yearly.  
-
----
-
-## 6. Refund Policy
-
-- 14-day refund guarantee for annual subscriptions (EU consumer directive compliant).  
-- No refunds for monthly subscriptions once a billing cycle has started.  
-- Exceptions granted for technical issues or double charges.  
+### Professional (€29.90/month or €299/year)
+- Everything in **Individual**, plus:  
+- **Enterprise private key** issued for your company.  
+- **DNS binding** for domain-level trust.  
+- **Branded watermark** (optional, visible).  
+- **Team features**: Multi-user seats (planned in v2).  
+- **Audit readiness**: Logs and certificates for compliance.  
+- **Support**: Dedicated channel + SLAs (planned in v2).  
 
 ---
 
-## 7. Compliance
+## Payment & Security
 
-- DigitalMeve follows international pricing and refund regulations:  
-  - **EU Consumer Rights Directive** (14-day withdrawal for annual plans).  
-  - **Stripe compliance** for payment security.  
-  - **Localized tax rules** (VAT, GST, sales tax automatically applied).  
-
----
-
-## 8. Localized Pricing
-
-- Base prices: €9.90 (Individual), €29.90 (Professional).  
-- Prices automatically **localized by Stripe**:  
-  - Currency conversion updated in real time.  
-  - Regional taxes applied automatically.  
-  - Optional purchasing power parity adjustments (regional pricing tiers).  
-
-### Example (illustrative)
-
-| Country        | Individual | Professional |
-|----------------|------------|---------------|
-| France (EUR)   | €9.90      | €29.90        |
-| USA (USD)      | $9.90      | $29.90        |
-| UK (GBP)       | £8.90      | £26.90        |
-| India (INR)    | ₹499       | ₹1499         |
-
-### Implementation
-
-- Stripe Checkout detects user location.  
-- Shows local currency and applies tax.  
-- Admin configures regional tiers in Stripe dashboard.  
+- All payments processed by **Stripe** (PCI DSS Level 1).  
+- Strong authentication via **3D Secure 2 / PSD2** in supported regions.  
+- Automatic billing and invoicing with secure customer portal.  
+- **Currency adaptation**: Local pricing based on IP and billing address.  
+- **Tax compliance**: VAT/GST/sales tax automatically calculated and remitted.  
 
 ---
 
-## 9. Summary
+## Refund Policy
+DigitalMeve follows **global best practices** for subscriptions:  
 
-- **Free Plan:** 5 certifications/month, anonymous.  
-- **Individual Plan:** €9.90/month, personal name/email in certificate.  
-- **Professional Plan:** €29.90/month, enterprise-grade private key + DNS.  
-- **Enterprise:** Custom pricing, bulk API, advanced governance.  
+- **Free tier**: No payment, no refund required.  
+- **Paid tiers**:  
+  - **Monthly** → cancel anytime, access retained until end of billing cycle.  
+  - **Yearly** → full refund available within 14 days (EU consumer law compliant).  
+- Exceptional refunds may be granted for billing errors or service outages.  
 
-DigitalMeve ensures **fair, transparent, and compliant global pricing** — aligned with international standards for SaaS and digital certification.
+---
+
+## Compliance
+DigitalMeve pricing and billing is aligned with global standards:  
+
+- **GDPR (EU)** — full transparency, right to data portability & erasure.  
+- **CCPA (California)** — opt-out rights and privacy protections.  
+- **PSD2 (EU payments)** — strong authentication.  
+- **PCI DSS (global payments)** — Stripe-certified infrastructure.  
+- **ISO 27001 principles** — secure information handling.  
+
+---
+
+## Future Plans
+- **Regional pricing** expansions for LATAM, APAC, Africa.  
+- **Enterprise tier** with API access, advanced analytics, and audit logs.  
+- **Non-profit discounts** (NGOs, universities, open knowledge projects).  
+
+---
+
+## Summary
+DigitalMeve pricing is:  
+- **Simple** → three tiers only (Free, Individual, Professional).  
+- **Fair** → global adaptation by country.  
+- **Compliant** → following EU, US, and international regulations.  
+- **Secure** → Stripe-managed, PCI DSS Level 1 certified.  
+- **Flexible** → cancel anytime, refunds according to law.  
+
+👉 Start free, then upgrade only if you need unlimited and enterprise-level certification.
